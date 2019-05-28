@@ -194,6 +194,12 @@ public class Lexer {
                 token = Symbol.GT;
               }
               break;
+            case '{' :
+              token = Symbol.LEFTBRACE;
+              break;
+            case '}' :
+              token = Symbol.RIGHTBRACE;
+              break;
             case '=' :
               if ( input[tokenPos] == '=' ) {
                 tokenPos++;

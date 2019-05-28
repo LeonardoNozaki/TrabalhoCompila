@@ -3,13 +3,13 @@ import java.util.*;
 import Lexer.*;
 
 public class ExprRel {
-    
-    public Expr(ExprAdd left, ExprAdd right, Symbol symbol) {
+
+    public ExprRel(ExprAdd left, ExprAdd right, Symbol symbol) {
         this.left = left;
         this.right = right;
         this.symbol = symbol;
     }
-    
+
     public void genC(PW pw) {
         left.genC(pw);
 

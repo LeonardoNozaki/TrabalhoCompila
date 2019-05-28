@@ -118,13 +118,13 @@ public class Compiler {
     Type result;
 
     switch ( lexer.token ) {
-      case Symbol.INTEGER :
+      case INT :
         result = Type.integerType;
         break;
-      case Symbol.BOOLEAN :
+      case BOOLEAN :
         result = Type.booleanType;
         break;
-      case Symbol.STRING :
+      case STRING :
         result = Type.stringType;
         break;
       default :  // only supports the above types
@@ -147,8 +147,9 @@ public class Compiler {
       error.signal("{ expected");
     lexer.nextToken();
 
-    while (lexer.token == Symbol.IDENT || lexer.token == Symbol.LITERALINT || lexer.token == Symbol.LITERALBOOLEAN || lexer.token == LITERALSTRING ||
-            lexer.token == Symbol.RETURN || lexer.token == Symbol.VAR || lexer.token == Symbol.IF || lexer.token == Symbol.WHILE) {
+    while (lexer.token == Symbol.IDENT || lexer.token == Symbol.LITERALINT || lexer.token == Symbol.TRUE ||
+            lexer.token == Symbol.FALSE || lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.RETURN ||
+            lexer.token == Symbol.VAR || lexer.token == Symbol.IF || lexer.token == Symbol.WHILE) {
       stmt.add(stat());
     }
 
@@ -164,18 +165,19 @@ public class Compiler {
     /* Stat ::= AssignExprStat | ReturnStat | VarDecStat | IfStat | WhileStat */
 
     switch (lexer.token) {
-      case Symbol.IDENT:      // all are terminals of the assign
-      case Symbol.LITERALINT:
-      case Symbol.LITERALBOOLEAN:
-      case Symbol.LITERALSTRING:
+      case IDENT:      // all are terminals of the assign
+      case LITERALINT:
+      case TRUE:
+      case FALSE:
+      case LITERALSTRING:
         return assignExprStat();
-      case Symbol.RETURN:
+      case RETURN:
         return returnStat();
-      case Symbol.VAR:
+      case VAR:
         return varDecStat();
-      case Symbol.IF:
+      case IF:
         return ifStat();
-      case Symbol.WHILE:
+      case WHILE:
         return whileStat();
       default :
         error.signal("Statement expected");
@@ -262,7 +264,7 @@ public class Compiler {
       error.signal("; expected");
     lexer.nextToken();
 
-    return VarDecStat( id, typeVar );
+    return new VarDecStat( id, typeVar );
   }
 
 
@@ -313,7 +315,7 @@ public class Compiler {
 
     ExprAdd left = exprAdd();
     ExprAdd right = null;
-    Symbol op;
+    Symbol op = null;
 
     /* RelOp ::= "<" | "<=" | ">" | ">=" | "==" | "!=" */
     if (lexer.token == Symbol.LT || lexer.token == Symbol.LE || lexer.token == Symbol.GT ||
@@ -331,7 +333,7 @@ public class Compiler {
 
     ArrayList<ExprMult> expr = new ArrayList<ExprMult>();
     expr.add(exprMult());
-    Symbol op;
+    Symbol op=null;
 
     while (lexer.token == Symbol.PLUS || lexer.token == Symbol.MINUS){
       op = lexer.token;
@@ -347,7 +349,7 @@ public class Compiler {
 
     ArrayList<ExprUnary> expr = new ArrayList<ExprUnary>();
     expr.add(exprUnary());
-    Symbol op;
+    Symbol op=null;
 
     while (lexer.token == Symbol.MULT || lexer.token == Symbol.DIV){
       op = lexer.token;
@@ -361,7 +363,7 @@ public class Compiler {
   private ExprUnary exprUnary() {
     /* ExprUnary ::= [ ( "+" | "-" ) ] ExprPrimary */
 
-    Symbol op;
+    Symbol op=null;
     if (lexer.token == Symbol.PLUS || lexer.token == Symbol.MINUS){
       op = lexer.token;
       lexer.nextToken();
@@ -382,33 +384,36 @@ public class Compiler {
         if (lexer.token == Symbol.LEFTPAR)
           return funcCall(id);
         else
-          return id;
+          return new StringExpr(id);
       default:
-        return exprLiteral();
+        return new ExprLiteral();
     }
   }
 
   private ExprLiteral exprLiteral() {
     /* ExprLiteral ::= LiteralInt | LiteralBoolean | LiteralString */
     switch (lexer.token) {
-      case Symbol.LITERALINT:
+      case LITERALINT:
         int number = lexer.getNumberValue();
         lexer.nextToken();
-        return NumberExpr(number);
-     case Symbol.TRUE :
+        return new NumberExpr(number);
+     case TRUE :
         lexer.nextToken();
         return BooleanExpr.True;
-      case Symbol.FALSE :
+      case FALSE :
         lexer.nextToken();
         return BooleanExpr.False;
-      case Symbol.LITERALSTRING:
+      case LITERALSTRING:
         String s = lexer.getStringValue();
         lexer.nextToken();
-        return StringExpr(s);
+        return new StringExpr(s);
+      default :
+        error.signal("ExprLiteral expected");
+        return null;
     }
   }
 
-  private FuncCall FuncCall(String id) {
+  private FuncCall funcCall(String id) {
     /* FuncCall ::= Id "(" [ Expr {”, ”Expr} ] ")" */
     ArrayList<Expr> expr = new ArrayList<Expr>();
 
@@ -418,9 +423,10 @@ public class Compiler {
 
     lexer.nextToken();
 
-    if (lexer.token == Symbol.IDENT || lexer.token == Symbol.LITERALINT || lexer.token == Symbol.LITERALBOOLEAN || lexer.token == LITERALSTRING) {
+    if (lexer.token == Symbol.IDENT || lexer.token == Symbol.LITERALINT || lexer.token == Symbol.FALSE ||
+        lexer.token == Symbol.TRUE || lexer.token == Symbol.LITERALSTRING) {
       expr.add(expr());
-      while (lexer.token == COMMA){
+      while (lexer.token == Symbol.COMMA){
         lexer.nextToken();
         expr.add(expr());
       }
@@ -429,7 +435,7 @@ public class Compiler {
     if (lexer.token == Symbol.RIGHTPAR)
       error.signal(") expected");
 
-    return new FuncCall( id, expr );
+    return new FuncCall( expr, id);
   }
 
   private Lexer lexer;

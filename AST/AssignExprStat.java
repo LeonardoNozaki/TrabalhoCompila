@@ -1,7 +1,7 @@
 package AST;
 
 public class AssignExprStat extends Statement {
-	public AssignmentStatement( Expr left, Expr right ) {
+	public AssignExprStat( Expr left, Expr right ) {
 		this.left = left;
 		this.right = right;
 	}

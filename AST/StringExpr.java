@@ -1,16 +1,16 @@
 package AST;
 
-public class StringExp extends ExprLiteral {
+public class StringExpr extends ExprLiteral {
 
 	public StringExpr( String value ) {
 		this.value = value;
 	}
 
 	public void genC( PW pw ) {
-		pw.out.print("’" + value + "’");
+		pw.out.print("\"" + value + "\"");
 	}
 
-	public char getValue() {
+	public String getValue() {
 		return value;
 	}
 
@@ -18,5 +18,5 @@ public class StringExp extends ExprLiteral {
 		return Type.stringType;
 	}
 
-	private char value;
+	private String value;
 }

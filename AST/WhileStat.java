@@ -1,5 +1,7 @@
 package AST;
 
+import java.util.*;
+
 public class WhileStat extends Statement {
   public WhileStat( Expr expr, ArrayList<Statement> sl ) {
     this.expr = expr;

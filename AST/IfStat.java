@@ -1,7 +1,9 @@
 package AST;
 
-public class IfStatement extends Statement {
-	public IfStatement( Expr expr, ArrayList<Statement> leftPart, ArrayList<Statement> rightPart ) {
+import java.util.*;
+
+public class IfStat extends Statement {
+	public IfStat( Expr expr, ArrayList<Statement> leftPart, ArrayList<Statement> rightPart ) {
 		this.expr = expr;
 		this.leftPart = leftPart;
 		this.rightPart = rightPart;

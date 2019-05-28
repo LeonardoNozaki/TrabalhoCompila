@@ -7,7 +7,7 @@ public class StringExpr extends ExprLiteral {
 	}
 
 	public void genC( PW pw ) {
-		pw.out.print("\"" + value + "\"");
+		pw.print("\"" + value + "\"");
 	}
 
 	public String getValue() {

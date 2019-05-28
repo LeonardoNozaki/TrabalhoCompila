@@ -11,16 +11,16 @@ public class WhileStat extends Statement {
   public void genC( PW pw ) {
     int i = 0;
     int tam = this.sl.size();
-    pw.out.print("while(");
+    pw.print("while(");
     this.expr.genC(pw);
-    pw.out.println("){");
+    pw.println("){");
     pw.add();
     while(i < tam){
       this.sl.get(i).genC(pw);
       i++;
     }
     pw.sub();
-    pw.out.println("}");
+    pw.println("}");
   }
 
   private Expr expr;

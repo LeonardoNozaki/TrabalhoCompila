@@ -9,19 +9,19 @@ public class FuncCall extends ExprPrimary {
     }
 
     public void genC(PW pw) {
-      pw.out.print(id + "(");
+      pw.print(id + "(");
       int i = 0;
       int tam = this.expr.size();
       if(!this.expr.isEmpty()){
         this.expr.get(i).genC(pw);
         i++;
         while(i < tam){
-          pw.out.print(", ");
+          pw.print(", ");
           this.expr.get(i).genC(pw);
           i++;
         }
       }
-      pw.out.println(");");
+      pw.println(");");
     }
 
     private ArrayList<Expr> expr = new ArrayList<Expr>();

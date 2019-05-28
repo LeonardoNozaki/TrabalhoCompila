@@ -162,7 +162,12 @@ public class Lexer {
               token = Symbol.PLUS;
               break;
             case '-' :
-              token = Symbol.MINUS;
+              if( input[tokenPos] == '>'){
+                tokenPos++;
+                token = Symbol.ARROW;
+              }
+              else
+                token = Symbol.MINUS;
               break;
             case '*' :
               token = Symbol.MULT;

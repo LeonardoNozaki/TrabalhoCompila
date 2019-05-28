@@ -20,10 +20,10 @@ public class Compiler {
     /* Program ::= Func {Func} */
 
     ArrayList<Function> funcList = new ArrayList<Function>();
-    func(funcList);
+    funcList.add(func());
 
     while (lexer.token == Symbol.FUNCTION) {
-      func(funcList);
+      funcList.add(func());
     }
 
     Program program = new Program(funcList);
@@ -33,7 +33,7 @@ public class Compiler {
     return program;
   }
 
-  private Function func( ArrayList<Function> funcList ) {
+  private Function func() {
     /* Func ::= "function" Id [ "(" ParamList ")" ] ["->" Type ] StatList */
 
     ArrayList<Variable> arrayParamList = null;

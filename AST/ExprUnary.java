@@ -11,7 +11,7 @@ public class ExprUnary {
 
     public void genC(PW pw) {
         if(this.symbol != null){
-            pw.out.print(symbol);
+            pw.print(symbol.toString());
         }
         this.expr.genC(pw);
     }

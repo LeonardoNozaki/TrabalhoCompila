@@ -7,9 +7,9 @@ public class ReturnStat extends Statement {
 	}
 
 	public void genC( PW pw ) {
-		pw.out.print("return ");
+		pw.print("return ");
 		this.e.genC(pw);
-		pw.out.println(";");
+		pw.println(";");
 	}
 
 	private Expr e;

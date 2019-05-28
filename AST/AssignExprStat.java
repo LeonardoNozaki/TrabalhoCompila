@@ -11,10 +11,10 @@ public class AssignExprStat extends Statement {
 		if ( right != null ) {
 			pw.print(" = ");
 			this.right.genC(pw);
-			pw.out.println(";");
+			pw.println(";");
 		}
 		else{
-			pw.out.println(";");
+			pw.println(";");
 		}
 	}
 

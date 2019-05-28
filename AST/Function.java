@@ -12,20 +12,23 @@ public class Function {
 
   public void genC(PW pw) {
       int i = 0;
-      int tam = paramList.size();
+      int tam;
       if(this.type == null)
-        pw.out.print("void ");
+        pw.print("void ");
       else
-        pw.out.print(this.type + " ");
-      pw.out.print(this.id);
-      pw.out.print("(");
-      while(i < tam){
-        this.paramList.get(i).genC(pw);
-        i++;
-        if(i < tam - 1)
-          pw.out.print(", ");
+        pw.print(this.type.getCname() + " ");
+      pw.print(this.id);
+      pw.print("(");
+      if(paramList != null){
+        tam = this.paramList.size();
+        while(i < tam){
+          this.paramList.get(i).genC(pw);
+          i++;
+          if(i < tam - 1)
+            pw.print(", ");
+        }
       }
-      pw.out.println("){");
+      pw.println("){");
       pw.add();
       tam = this.statList.size();
       i = 0;
@@ -34,7 +37,7 @@ public class Function {
         i++;
       }
       pw.sub();
-      pw.out.println("}");
+      pw.println("}");
   }
 
   private String id;

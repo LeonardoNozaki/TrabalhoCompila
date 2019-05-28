@@ -15,7 +15,7 @@ public class ExprAnd {
         this.expr.get(i).genC(pw);
         i++;
         while(i < tam){
-            pw.out.print(" && ");
+            pw.print(" && ");
             this.expr.get(i).genC(pw);
             i++;
         }

@@ -10,12 +10,12 @@ public class NumberExpr extends ExprLiteral {
 	}
 
 	public void genC( PW pw ) {
-		pw.out.print(value);
+		pw.print(value.toString());
 	}
 
 	public Type getType() {
 		return Type.integerType;
 	}
 	
-	private int value;
+	private Integer value;
 }

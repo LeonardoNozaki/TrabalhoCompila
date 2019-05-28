@@ -23,7 +23,7 @@ public class Variable {
 	}
 
 	public void genC(PW pw) {
-		pw.out.print(this.type + " " + this.name);
+		pw.print(this.type.getCname() + " " + this.name);
 	}
 
 	private String name;

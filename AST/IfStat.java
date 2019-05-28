@@ -12,27 +12,27 @@ public class IfStat extends Statement {
 	public void genC( PW pw ) {
 		int i = 0;
 		int tam = this.leftPart.size();
-		pw.out.print("if (");
+		pw.print("if (");
 		this.expr.genC(pw);
-		pw.out.println("){");
+		pw.println("){");
 		pw.add();
 		while(i < tam){
 			this.leftPart.get(i).genC(pw);
 			i++;
 		}
 		pw.sub();
-		pw.out.println("}");
+		pw.println("}");
 		if(!this.rightPart.isEmpty()){
 			i = 0;
 			tam = this.rightPart.size();
-			pw.out.println("else{");
+			pw.println("else{");
 			pw.add();
 			while(i < tam){
 				this.rightPart.get(i).genC(pw);
 				i++;
 			}
 			pw.sub();
-			pw.out.println("}");
+			pw.println("}");
 		}
 	}
 

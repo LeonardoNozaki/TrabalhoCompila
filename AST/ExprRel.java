@@ -13,7 +13,7 @@ public class ExprRel {
     public void genC(PW pw) {
         this.left.genC(pw);
         if (right != null) {  // VOLTAR AQUI
-            pw.out.print(" " + symbol + " ");
+            pw.print(" " + symbol + " ");
             this.right.genC(pw);
         }
     }

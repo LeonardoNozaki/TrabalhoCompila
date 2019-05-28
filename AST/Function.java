@@ -24,7 +24,7 @@ public class Function {
         while(i < tam){
           this.paramList.get(i).genC(pw);
           i++;
-          if(i < tam - 1)
+          if(i < tam)
             pw.print(", ");
         }
       }

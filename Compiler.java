@@ -83,6 +83,7 @@ public class Compiler {
     paramDec(paramList);
 
     while (lexer.token == Symbol.COMMA) {
+      lexer.nextToken();
       paramDec(paramList);
     }
     return paramList;

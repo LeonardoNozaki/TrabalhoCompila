@@ -7,14 +7,14 @@ public class Program {
 	}
 
 	public void genC( PW pw ) {
-		int i = 0;
+		int i = 1;
 		int tam = this.funcList.size();
-		this.funcList.get(i).genC(pw);
-		i++;
+		this.funcList.get(0).genC(pw);
 		pw.print("\n");
-		while(tam > 1){
+		while(i < tam){
 			this.funcList.get(i).genC(pw);
 			pw.print("\n");
+			i++;
 		}
 	}
 

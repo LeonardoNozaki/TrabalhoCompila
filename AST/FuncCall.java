@@ -21,7 +21,7 @@ public class FuncCall extends ExprPrimary {
           i++;
         }
       }
-      pw.println(");");
+      pw.print(")");
     }
 
     private ArrayList<Expr> expr = new ArrayList<Expr>();

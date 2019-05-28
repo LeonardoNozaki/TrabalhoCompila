@@ -386,7 +386,7 @@ public class Compiler {
         else
           return new StringExpr(id);
       default:
-        return new ExprLiteral();
+        return exprLiteral();
     }
   }
 
@@ -432,8 +432,10 @@ public class Compiler {
       }
     }
 
-    if (lexer.token == Symbol.RIGHTPAR)
+    if (lexer.token != Symbol.RIGHTPAR)
       error.signal(") expected");
+
+    lexer.nextToken();
 
     return new FuncCall( expr, id);
   }

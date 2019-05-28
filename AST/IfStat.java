@@ -10,6 +10,30 @@ public class IfStat extends Statement {
 	}
 
 	public void genC( PW pw ) {
+		int i = 0;
+		int tam = this.leftPart.size();
+		pw.out.print("if (");
+		this.expr.genC(pw);
+		pw.out.println("){");
+		pw.add();
+		while(i < tam){
+			this.leftPart.get(i).genC(pw);
+			i++;
+		}
+		pw.sub();
+		pw.out.println("}");
+		if(!this.rightPart.isEmpty()){
+			i = 0;
+			tam = this.rightPart.size();
+			pw.out.println("else{");
+			pw.add();
+			while(i < tam){
+				this.rightPart.get(i).genC(pw);
+				i++;
+			}
+			pw.sub();
+			pw.out.println("}");
+		}
 	}
 
 	private Expr expr;

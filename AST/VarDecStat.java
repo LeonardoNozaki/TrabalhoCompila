@@ -7,7 +7,7 @@ public class VarDecStat extends Statement {
   }
 
   public void genC( PW pw ) {
-
+    pw.out.println(this.type + " " + this.name + ";");
   }
 
   private String name;

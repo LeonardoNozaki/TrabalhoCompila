@@ -3,9 +3,5 @@ import java.util.*;
 import Lexer.*;
 
 public class ExprLiteral extends ExprPrimary {
-  public ExprLiteral() {
-
-    }
-
-
+    public void genC(PW pw) {}
 }

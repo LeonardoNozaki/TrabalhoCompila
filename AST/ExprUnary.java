@@ -10,7 +10,10 @@ public class ExprUnary {
     }
 
     public void genC(PW pw) {
-
+        if(this.symbol != null){
+            pw.out.print(symbol);
+        }
+        this.expr.genC(pw);
     }
 
     private ExprPrimary expr;

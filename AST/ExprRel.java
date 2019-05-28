@@ -11,13 +11,10 @@ public class ExprRel {
     }
 
     public void genC(PW pw) {
-        left.genC(pw);
-
-        if (right.isEmpty()) {  // VOLTAR AQUI
-            for (ExprAnd e: right){
-                pw.out.print(" || ");
-                e.genC(pw);
-            }
+        this.left.genC(pw);
+        if (right != null) {  // VOLTAR AQUI
+            pw.out.print(" " + symbol + " ");
+            this.right.genC(pw);
         }
     }
 

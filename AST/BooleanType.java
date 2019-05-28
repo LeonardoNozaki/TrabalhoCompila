@@ -1,4 +1,6 @@
 package AST;
+import java.util.*;
+import Lexer.*;
 
 public class BooleanType extends Type {
 

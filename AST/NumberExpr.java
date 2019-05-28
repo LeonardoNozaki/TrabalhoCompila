@@ -1,6 +1,6 @@
 package AST;
 
-public class NumberExpr extends Expr {
+public class NumberExpr extends ExprLiteral {
 	public NumberExpr( int value ) {
 		this.value = value;
 	}

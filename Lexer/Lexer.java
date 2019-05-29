@@ -146,8 +146,13 @@ public class Lexer {
           }
 
           //Emite erro se o numero estiver fora dos limites permitidos
-          if ( numberValue >= MaxValueInteger ) {
+          if ( numberValue > MaxValueInteger ) {
             error.signal("Number out of limits");
+          }
+
+          //Nao pode haver um numero e uma letra em seguida
+          if ( Character.isLetter( input[tokenPos] )) {
+            error.signal("Number followed by a letter");
           }
         } else {
           //Pega simbolos
@@ -180,7 +185,7 @@ public class Lexer {
                 tokenPos++;
                 token = Symbol.NEQ;
               } else {
-                error.signal("Invalid symbol: ’" + ch + input[tokenPos] + "’");
+                error.signal("Invalid symbol: ’" + ch + "’");
               }
               break;
             case '<' :
@@ -314,6 +319,8 @@ public class Lexer {
   private String stringValue;
   private int numberValue;
   private int tokenPos;
+
+
 
   // input[lastTokenPos] is the last character of the last token
   private int lastTokenPos;

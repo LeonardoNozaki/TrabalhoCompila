@@ -15,7 +15,7 @@ public class CompilerError {
   }
 
   public void signal( String strMessage ) {
-    out.println("Error at line " + lexer.getLineNumber() + ": ");
+    out.println("Error at line "  + ": ");
     out.println(lexer.getCurrentLine());
     out.println( strMessage );
 

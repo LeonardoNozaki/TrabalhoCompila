@@ -6,7 +6,7 @@ public class StringType extends Type {
 		super("String");
 	}
 
-	public String getCname() {  // TEM QUE ARRUMAR ISSO, STRING É VETOR DE CHAR
-		return "char";
+	public String getCname() {  
+		return "string";
 	}
 }

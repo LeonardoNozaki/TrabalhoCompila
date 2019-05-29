@@ -384,8 +384,10 @@ public class Compiler {
         lexer.nextToken();
         if (lexer.token == Symbol.LEFTPAR)
           return funcCall(id);
-        else
-          return new StringExpr(id);
+        else{
+          Variable v = new Variable(id);
+          return new VariableExpr(v);
+        }
       default:
         return exprLiteral();
     }

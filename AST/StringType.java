@@ -7,6 +7,6 @@ public class StringType extends Type {
 	}
 
 	public String getCname() {  
-		return "string";
+		return "char[]";
 	}
 }

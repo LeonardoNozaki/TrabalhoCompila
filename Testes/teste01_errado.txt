@@ -1,0 +1,30 @@
+//Erro, sem : entre id e tipo nos parametros
+function fatorial(n Int) -> Int{
+	//Erro, sem { depois do if e antes StatList
+	if n <= 0 
+		return 1;
+	}
+	else {
+		return n*fatorial(n-1);
+	//Erro, sem } depois do StatList do else
+}
+
+//Erro, sem ) depois dos parametros
+function imprima(before: Int, valor: Int, after: String {
+	//Erro, devia ser var e nao varr
+	varr i : Int;
+	i = 0;
+	//Erro, operaor !< nao existe
+	while i !< before {
+		//Erro, falta fechar aspas
+		write("*);
+		i = i + 1;
+	}
+	writeln("")
+	writeln(valor);
+	writeln(after);
+}
+
+function main {
+	imprima(50, fatorial(5)*2*fatorial(3), " 	fim");
+}

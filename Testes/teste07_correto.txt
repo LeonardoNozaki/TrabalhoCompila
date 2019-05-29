@@ -1,0 +1,105 @@
+function constante -> Int{
+	var valor1 : Int;
+	var valor2 : Int;
+	valor1 = 1 * + 2 + +5 * - 4;
+	valor2 = 10 / 2 - 20 /  - 5;
+	if valor1 or valor 2 != 10 {
+		return valor1;
+	}
+	return valor2;
+}
+
+
+//Funcao de multiplicar dois valores utilizandos dois meios diferentes
+function multiplicar (mult1 : Int, mult2 : Int, tipo : Boolean) -> Int{
+	if tipo == true{
+		var i : Int;
+		i = 1;
+		var total : Int;
+		total = 0;
+		while i <= mult2{
+			total = total + mult1;		
+			i = i + 1;
+		} 
+		return total;
+	}
+	if tipo == false{
+		var total : Int;
+		total = mult1 * mult2;
+		return total;
+	}
+}
+
+function maiorIgual(valor1 : Int, valor2: Int) -> Boolean{
+	if valor1 >= valor2{
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function mensagem(msg : String) -> String{
+	writeln(msg);
+	return "write";
+}
+
+function calc(oper : Boolean){
+	var valor : Int;
+	var x : Int;
+	x = - constante + 100;
+	valor = 1 + constante();
+	if oper == true or x > 80 and x < 0 and valor != 2 or valor > 50  {
+		valor = valor + 50;
+	}
+}
+
+function mensagens(msg1 : String, msg2 : String){
+	var aux : String;
+	aux = "Ola, sua mensagem:";
+	write(aux);
+	writeln(msg1);
+	write(aux);
+	writeln(msg2);
+}
+
+function portaAnd(e1 : Boolean, e2 : Boolean) -> Boolean{
+	e1;
+	e2;
+	var resultado : Boolean;
+	if e1 == true and e2 == true {
+		resultado = true;
+	}
+	else{
+		resultado = false;
+	}
+	return resultado;
+}
+
+function comparador(msg : String, tipoComp : Boolean){
+	var com : String;
+	com = "Permitido";
+	if tipoComp{
+		com = "Proibido";
+	}
+	if msg == com{
+		write("Acertou");
+	}
+}
+
+/* Loooooo
+  oooooopp
+*/
+function loopInfinito {
+	while expr { }
+}
+
+function main{
+	var resultado : Int;
+	resultado = multiplicar(constante(), 10, true);
+	calc(maiorIgual(resultado, 10));
+	mensagem("ola");
+	mensagens("Cuidado", "Pode ir");
+	comparador("Permitido", portaAnd(true, true));
+	loopInfinito();
+}

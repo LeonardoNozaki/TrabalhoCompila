@@ -1,0 +1,48 @@
+//Erro de tipo, String escrito errado
+function mensagem(msg : Streng) -> strang{
+	//Erro, falta fechar parenteses
+	writeln(msg ;
+	//Erro, falta fechar aspas
+	return "write;
+}
+
+//Erro de tipo, Boolean escrito errado
+function calc(oper : Bool){
+	var valor : Int;
+	var x : Int;
+	//Erro, falta o = entre as duas expressoes
+	x  - constante + 100;
+	valor = 1 + constante();
+	//Erro, or escrito errado
+	if oper == true ou x > 80 and x < 0 and valor != 2 or valor > 50  {
+		valor = valor + 50;
+	}
+//Erro, falta }
+
+
+function mensagens(msg1 : String, msg2 : String){
+	//Erro, falta : entre aux e String
+	var aux  String;
+	//Erro, falta ; no fim
+	aux = "Ola, sua mensagem:"
+	write(aux);
+	writeln(msg1);
+	write(aux);
+	writeln(msg2);
+}
+
+function portaAnd(e1 : Boolean, e2 : Boolean) -> Boolean{
+	e1;
+	e2;
+	var resultado : Boolean;
+	//Erro, if escrito errado
+	ifs e1 == true and e2 == true {
+		resultado = true;
+	}
+	//Erro, else escrito errado
+	eles{
+		resultado = false;
+	}
+	//Erro, return escrito errado e falta ;
+	retrnn resultado
+}

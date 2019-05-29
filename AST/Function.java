@@ -17,18 +17,19 @@ public class Function {
         pw.print("void ");
       else
         pw.print(this.type.getCname() + " ");
-      pw.print(this.id);
-      pw.print("(");
+
+      pw.out.print(this.id);
+      pw.out.print("(");
       if(paramList != null){
         tam = this.paramList.size();
         while(i < tam){
           this.paramList.get(i).genC(pw);
           i++;
           if(i < tam)
-            pw.print(", ");
+            pw.out.print(", ");
         }
       }
-      pw.println("){");
+      pw.out.println("){");
       pw.add();
       tam = this.statList.size();
       i = 0;

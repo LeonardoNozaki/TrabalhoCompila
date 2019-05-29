@@ -8,6 +8,7 @@ public class CompilerError {
   public CompilerError( PrintWriter out ) {
     // output of an error is done in out
     this.out = out;
+    flagC = true;
   }
 
   public void setLexer( Lexer lexer ) {
@@ -15,6 +16,9 @@ public class CompilerError {
   }
 
   public void signal( String strMessage ) {
+    if(flagC == false){
+      out.println();
+    }
     out.println("Error at line " + lexer.getLineNumber() + ": ");
     out.println(lexer.getCurrentLine());
     out.println( strMessage );
@@ -22,9 +26,14 @@ public class CompilerError {
     if ( out.checkError() ) {
       System.out.println("Error in signaling an error");
     }
-    throw new RuntimeException(strMessage);
+    flagC = false;
   }
 
+  public boolean getFlagC(){
+    return flagC;
+  }
+
+  private boolean flagC;
   private Lexer lexer;
   PrintWriter out;
 }

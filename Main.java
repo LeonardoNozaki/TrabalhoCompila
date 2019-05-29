@@ -106,7 +106,7 @@ public class Main {
       }
 
       //Verifica se o retorno do compile for diferente de null
-      if ( program != null ) {
+      if ( program != null && compiler.getC() ) {
         //Cria uma instancia da classe Pw
         PW pw = new PW();
 
@@ -120,6 +120,12 @@ public class Main {
         if ( printWriter.checkError() ) {
           System.out.println("There was an error in the output");
         }
+        else{
+          System.out.println("Program compiled successfully, check " + args[1] + " to see it");
+        }
+      }
+      else{
+        System.out.println("Errors found in " + args[0] +", check " + args[1] + " to see them");
       }
     }
   }

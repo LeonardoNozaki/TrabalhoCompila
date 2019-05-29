@@ -10,10 +10,10 @@ public class Program {
 		int i = 1;
 		int tam = this.funcList.size();
 		this.funcList.get(0).genC(pw);
-		pw.print("\n");
+		pw.out.print("\n");
 		while(i < tam){
 			this.funcList.get(i).genC(pw);
-			pw.print("\n");
+			pw.out.print("\n");
 			i++;
 		}
 	}

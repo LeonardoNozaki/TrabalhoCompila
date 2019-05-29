@@ -16,12 +16,12 @@ public class FuncCall extends ExprPrimary {
         this.expr.get(i).genC(pw);
         i++;
         while(i < tam){
-          pw.print(", ");
+          pw.out.print(", ");
           this.expr.get(i).genC(pw);
           i++;
         }
       }
-      pw.print(")");
+      pw.out.print(")");
     }
 
     private ArrayList<Expr> expr = new ArrayList<Expr>();

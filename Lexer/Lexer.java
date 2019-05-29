@@ -126,6 +126,9 @@ public class Lexer {
           if ( Character.isDigit(input[tokenPos]) ) {
             error.signal("Word followed by a number");
           }
+          while ( Character.isDigit( input[tokenPos] ) ) {
+            tokenPos++;
+          }
         } else if ( Character.isDigit( ch ) ) {
           //Pega um numero
           StringBuffer number = new StringBuffer();
@@ -153,6 +156,9 @@ public class Lexer {
           //Nao pode haver um numero e uma letra em seguida
           if ( Character.isLetter( input[tokenPos] )) {
             error.signal("Number followed by a letter");
+          }
+          while ( Character.isLetter( input[tokenPos] ) ) {
+            tokenPos++;
           }
         } else {
           //Pega simbolos

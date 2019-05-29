@@ -1,0 +1,34 @@
+//Erro, function escrito errado
+//Erro, sem virgula entre os parametros
+functon multiplicar (mult1 : Int mult2 : Int tipo : Boolean) -> Int{
+	//Erro, true escrito errado
+	if tipo == ture{
+		var i : Int;
+		i = 1;
+		var total : Int;
+		total = 0;
+		while i <= mult2{
+			total = total + mult1;		
+			i = i @ 1;
+		} 
+		return total;
+	}
+	//Erro, false escrito errado
+	if tipo == falce{
+		var total : Int;
+		total = mult1 x mult2;
+		return total;
+	}
+}
+
+//Erro, esperado ( antes dos parametros
+//Erro, esperado -> alem de >
+function maiorIgual valor1 : Int, valor2: Int) > Boolean{
+	//Erro, operador nao existe
+	if valor1 & valor2{
+		return true;
+	}
+	else{
+		return false;
+	}
+}

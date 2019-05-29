@@ -1,0 +1,31 @@
+function comparador(msg : String, tipoComp : Boolean){
+	var com : String;
+	com = "Permitido";
+	if tipoComp{
+		com = "Proibido";
+	}
+	if msg == com{
+		write("Acertou");
+	}
+}
+
+function loopInfinito {
+	//Erro, while escrito errado
+	whiles expr { }
+}
+
+function main{
+	var resultado : Int;
+
+	//Erro, falta ( na chamada de funcao multiplicar
+	resultado = multiplicar constante(), 10, true);
+	calc(maiorIgual(resultado, 10));
+	mensagem("ola");
+
+	//Erro, falta ) na chamada de funcao mensagens
+	mensagens("Cuidado", "Pode ir" ;
+
+	//Erro, falta virgula entre os parametros
+	comparador("Permitido"  portaAnd(true, true));
+	loopInfinito();
+}

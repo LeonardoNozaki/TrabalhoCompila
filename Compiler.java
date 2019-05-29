@@ -443,6 +443,10 @@ public class Compiler {
     return new FuncCall( expr, id);
   }
 
+  public boolean getC(){
+    return error.getFlagC();
+  }
+
   private Lexer lexer;
   private CompilerError error;
 }

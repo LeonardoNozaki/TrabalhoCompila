@@ -15,7 +15,7 @@ public class ExprMult {
         this.expr.get(i).genC(pw);
         i++;
         while(i < tam){
-            pw.print(" " + symbol + " ");
+            pw.out.print(" " + symbol + " ");
             this.expr.get(i).genC(pw);
             i++;
         }

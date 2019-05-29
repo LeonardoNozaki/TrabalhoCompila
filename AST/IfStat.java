@@ -14,7 +14,7 @@ public class IfStat extends Statement {
 		int tam = this.leftPart.size();
 		pw.print("if (");
 		this.expr.genC(pw);
-		pw.println("){");
+		pw.out.println("){");
 		pw.add();
 		while(i < tam){
 			this.leftPart.get(i).genC(pw);
@@ -22,6 +22,7 @@ public class IfStat extends Statement {
 		}
 		pw.sub();
 		pw.println("}");
+
 		if(!this.rightPart.isEmpty()){
 			i = 0;
 			tam = this.rightPart.size();

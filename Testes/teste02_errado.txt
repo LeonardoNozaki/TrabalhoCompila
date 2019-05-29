@@ -1,0 +1,15 @@
+//Erro no tipo de retorno da funcao
+function constante -> int{
+	var valor1 : Int;
+	//Erro no tipo da declaracao abaixo
+	var valor2 : int;
+	//Erro, falta operador
+	valor1 = 1 2;
+	//Erro, operador errado
+	valor2 = 10 <> 2 - 20 $  - 5;
+	if valor1 or valor 2 != 10 {
+		return valor1;
+	}
+	//Erro falta ; apos a expr abaixo
+	return valor2
+}

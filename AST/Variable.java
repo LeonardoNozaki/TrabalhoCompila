@@ -15,8 +15,8 @@ public class Variable {
 	}
 
 	public String getName() {
-    return name;
-  }
+	    return name;
+	}
 
 	public Type getType() {
 		return type;

@@ -7,6 +7,7 @@ public class AssignExprStat extends Statement {
 	}
 
 	public void genC( PW pw ) {  // NÃO SEI SE ISSO TÁ CERTO
+		pw.print("");
 		this.left.genC(pw);
 		if ( right != null ) {
 			pw.out.print(" = ");

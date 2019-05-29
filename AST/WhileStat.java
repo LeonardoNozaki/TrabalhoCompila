@@ -13,7 +13,7 @@ public class WhileStat extends Statement {
     int tam = this.sl.size();
     pw.print("while(");
     this.expr.genC(pw);
-    pw.println("){");
+    pw.out.println("){");
     pw.add();
     while(i < tam){
       this.sl.get(i).genC(pw);

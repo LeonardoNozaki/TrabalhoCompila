@@ -9,7 +9,7 @@ public class FuncCall extends ExprPrimary {
     }
 
     public void genC(PW pw) {
-      pw.print(id + "(");
+      pw.out.print(id + "(");
       int i = 0;
       int tam = this.expr.size();
       if(!this.expr.isEmpty()){

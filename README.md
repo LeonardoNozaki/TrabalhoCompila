@@ -15,7 +15,7 @@ Giulia Fazzi
 [Michele Carvalho](https://github.com/xmixele/)
 
 #### Fase 1:
-O objetivo da primeira fase é implementar os analisadores léxicos e sintáticos do compilador. Liguagem adotada: Java.
+O objetivo da primeira fase é implementar os analisadores léxicos e sintáticos do compilador. Linguagem adotada: Java.
 
 #### Executando:
 Para compilar:

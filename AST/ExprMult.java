@@ -4,9 +4,10 @@ import Lexer.*;
 
 public class ExprMult {
 
-    public ExprMult(ArrayList<ExprUnary> expr, Symbol symbol) {
+    public ExprMult(ArrayList<ExprUnary> expr, Symbol symbol, Type type) {
         this.expr = expr;
         this.symbol = symbol;
+        this.type = type;
     }
 
     public void genC(PW pw) {
@@ -21,6 +22,11 @@ public class ExprMult {
         }
     }
 
+    public Type getType() {
+        return type;
+    }
+
     private ArrayList<ExprUnary> expr = new ArrayList<ExprUnary>();
     private Symbol symbol;
+    private Type type;
 }

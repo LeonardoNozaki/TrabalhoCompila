@@ -9,6 +9,8 @@ public class Program {
 	public void genC( PW pw ) {
 		int i = 1;
 		int tam = this.funcList.size();
+		pw.out.println("#include <stdio.h>");
+		pw.out.println("");
 		this.funcList.get(0).genC(pw);
 		pw.out.print("\n");
 		while(i < tam){

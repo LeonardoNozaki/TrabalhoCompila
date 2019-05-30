@@ -3,6 +3,8 @@ import java.util.*;
 import Lexer.*;
 
 public class FuncCall extends ExprPrimary {
+  public FuncCall() {} // default constructor
+
   public FuncCall(ArrayList<Expr> expr, String id) {
         this.expr = expr;
         this.id = id;
@@ -22,6 +24,10 @@ public class FuncCall extends ExprPrimary {
         }
       }
       pw.out.print(")");
+    }
+
+    public Type getType() {
+        return null;
     }
 
     private ArrayList<Expr> expr = new ArrayList<Expr>();

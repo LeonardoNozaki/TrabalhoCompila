@@ -4,9 +4,10 @@ import Lexer.*;
 
 public class ExprUnary {
 
-    public ExprUnary(ExprPrimary expr, Symbol symbol) {
+    public ExprUnary(ExprPrimary expr, Symbol symbol, Type type) {
         this.expr = expr;
         this.symbol = symbol;
+        this.type = type;
     }
 
     public void genC(PW pw) {
@@ -16,6 +17,11 @@ public class ExprUnary {
         this.expr.genC(pw);
     }
 
+    public Type getType() {
+        return type;
+    }
+
     private ExprPrimary expr;
     private Symbol symbol;
+    private Type type;
 }

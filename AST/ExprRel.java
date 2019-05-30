@@ -4,10 +4,11 @@ import Lexer.*;
 
 public class ExprRel {
 
-    public ExprRel(ExprAdd left, ExprAdd right, Symbol symbol) {
+    public ExprRel(ExprAdd left, ExprAdd right, Symbol symbol, Type type) {
         this.left = left;
         this.right = right;
         this.symbol = symbol;
+        this.type = type;
     }
 
     public void genC(PW pw) {
@@ -18,6 +19,11 @@ public class ExprRel {
         }
     }
 
+    public Type getType() {
+        return type;
+    }
+
     private ExprAdd left, right;
     private Symbol symbol;
+    private Type type;
 }

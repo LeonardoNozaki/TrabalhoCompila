@@ -44,6 +44,8 @@ public class Lexer {
     keywordsTable.put( "and", Symbol.AND );
     keywordsTable.put( "true", Symbol.TRUE );
     keywordsTable.put( "false", Symbol.FALSE );
+    keywordsTable.put( "write", Symbol.WRITE );
+    keywordsTable.put( "writeln", Symbol.WRITELN );
   }
 
   //Metodo para pegar o proximo token da analise lexica

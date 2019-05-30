@@ -4,9 +4,10 @@ import Lexer.*;
 
 public class ExprAnd {
 
-    public ExprAnd(ArrayList<ExprRel> expr, Symbol symbol) {
+    public ExprAnd(ArrayList<ExprRel> expr, Symbol symbol, Type type) {
         this.expr = expr;
         this.symbol = symbol;
+        this.type = type;
     }
 
     public void genC(PW pw) {
@@ -21,6 +22,11 @@ public class ExprAnd {
         }
     }
 
+    public Type getType() {
+        return type;
+    }
+
     private ArrayList<ExprRel>expr = new ArrayList<ExprRel>();
     private Symbol symbol;
+    private Type type;
 }

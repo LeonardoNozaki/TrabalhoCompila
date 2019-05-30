@@ -8,7 +8,7 @@ import java.io.*;
 public class Compiler {
   // compile must receive an input with an character less than
   // p_input.lenght
-  public Program compile( char []input, PrintWriter outError ) { // OK
+  public Program compile( char []input, PrintWriter outError ) { 
     error = new CompilerError( outError );
     lexer = new Lexer(input, error);
     error.setLexer(lexer);
@@ -150,7 +150,8 @@ public class Compiler {
 
     while (lexer.token == Symbol.IDENT || lexer.token == Symbol.LITERALINT || lexer.token == Symbol.TRUE ||
             lexer.token == Symbol.FALSE || lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.RETURN ||
-            lexer.token == Symbol.VAR || lexer.token == Symbol.IF || lexer.token == Symbol.WHILE) {
+            lexer.token == Symbol.VAR || lexer.token == Symbol.IF || lexer.token == Symbol.WHILE ||
+	    lexer.token == Symbol.WRITE || lexer.token == Symbol.WRITELN) {
       stmt.add(stat());
     }
 
@@ -171,6 +172,8 @@ public class Compiler {
       case TRUE:
       case FALSE:
       case LITERALSTRING:
+      case WRITE:
+      case WRITELN:
         return assignExprStat();
       case RETURN:
         return returnStat();
@@ -199,6 +202,7 @@ public class Compiler {
 
     if (lexer.token != Symbol.SEMICOLON)
       error.signal("; expected");
+
     lexer.nextToken();
 
     return new AssignExprStat( left, right );
@@ -288,33 +292,42 @@ public class Compiler {
   private Expr expr() {
     /* Expr ::= ExprAnd {”or” ExprAnd} */
     ArrayList<ExprAnd> expr = new ArrayList<ExprAnd>();
-    expr.add(exprAnd());
+    Type type;
+
+    ExprAnd left = exprAnd();
+    type = left.getType();
+    expr.add(left);
 
     while (lexer.token == Symbol.OR) {
       lexer.nextToken();
       expr.add(exprAnd());
     }
 
-    return new Expr( expr, Symbol.OR );
+    return new Expr( expr, Symbol.OR, type );
   }
 
   private ExprAnd exprAnd() {
     /* ExprAnd ::= ExprRel {”and” ExprRel} */
     ArrayList<ExprRel> expr = new ArrayList<ExprRel>();
-    expr.add(exprRel());
+    Type type;
+
+    ExprRel left = exprRel();
+    type = left.getType();
+    expr.add(left);
 
     while (lexer.token == Symbol.AND) {
       lexer.nextToken();
       expr.add(exprRel());
     }
 
-    return new ExprAnd( expr, Symbol.AND );
+    return new ExprAnd( expr, Symbol.AND, type );
   }
 
   private ExprRel exprRel() {
     /* ExprRel ::= ExprAdd [ RelOp ExprAdd ] */
 
     ExprAdd left = exprAdd();
+    Type type = left.getType();
     ExprAdd right = null;
     Symbol op = null;
 
@@ -326,14 +339,19 @@ public class Compiler {
       right = exprAdd();
     }
 
-    return new ExprRel( left, right, op );
+    return new ExprRel( left, right, op, type );
   }
 
   private ExprAdd exprAdd() {
     /* ExprAdd ::= ExprMult { (” + ” | ” − ”) ExprMult} */
 
     ArrayList<ExprMult> expr = new ArrayList<ExprMult>();
-    expr.add(exprMult());
+    Type type;
+
+    ExprMult left = exprMult();
+    type = left.getType();
+    expr.add(left);
+
     Symbol op=null;
 
     while (lexer.token == Symbol.PLUS || lexer.token == Symbol.MINUS){
@@ -342,14 +360,19 @@ public class Compiler {
       expr.add(exprMult());
     }
 
-    return new ExprAdd( expr, op );
+    return new ExprAdd( expr, op, type );
   }
 
   private ExprMult exprMult() {
     /* ExprMult ::= ExprUnary {(” ∗ ” | ”/”) ExprUnary} */
 
     ArrayList<ExprUnary> expr = new ArrayList<ExprUnary>();
-    expr.add(exprUnary());
+    Type type;
+
+    ExprUnary left = exprUnary();
+    type = left.getType();
+    expr.add(left);
+
     Symbol op=null;
 
     while (lexer.token == Symbol.MULT || lexer.token == Symbol.DIV){
@@ -358,7 +381,7 @@ public class Compiler {
       expr.add(exprUnary());
     }
 
-    return new ExprMult( expr, op );
+    return new ExprMult( expr, op, type );
   }
 
   private ExprUnary exprUnary() {
@@ -371,8 +394,9 @@ public class Compiler {
     }
 
     ExprPrimary exprPrimary = exprPrimary();
+    Type type = exprPrimary.getType();
 
-    return new ExprUnary(exprPrimary, op);
+    return new ExprUnary(exprPrimary, op, type);
   }
 
   private ExprPrimary exprPrimary() {
@@ -380,6 +404,8 @@ public class Compiler {
 
     switch (lexer.token) {
       case IDENT:
+      case WRITE:
+      case WRITELN:
         String id = lexer.getStringValue();
         lexer.nextToken();
         if (lexer.token == Symbol.LEFTPAR)
@@ -398,6 +424,7 @@ public class Compiler {
     switch (lexer.token) {
       case LITERALINT:
         int number = lexer.getNumberValue();
+	String n = lexer.getStringValue();
         lexer.nextToken();
         return new NumberExpr(number);
      case TRUE :
@@ -439,6 +466,9 @@ public class Compiler {
       error.signal(") expected");
 
     lexer.nextToken();
+
+    if (id.equals(Symbol.WRITE.toString()) || id.equals(Symbol.WRITELN.toString()))
+	return new Write( expr, id );
 
     return new FuncCall( expr, id);
   }

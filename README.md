@@ -19,7 +19,7 @@ O objetivo da primeira fase é implementar os analisadores léxicos e sintático
 
 #### Executando:
 Para compilar:
-> javac *.java
+> make
 
 Para executar:
 > java Main arquivo_entrada arquivo_saida

@@ -21,7 +21,7 @@ import java.io.*;
 public class Compiler {
   // compile must receive an input with an character less than
   // p_input.lenght
-  public Program compile( char []input, PrintWriter outError ) { 
+  public Program compile( char []input, PrintWriter outError ) {
     error = new CompilerError( outError );
     lexer = new Lexer(input, error);
     error.setLexer(lexer);
@@ -54,32 +54,60 @@ public class Compiler {
     ArrayList<Statement> arrayStatList = null;
 
     if (lexer.token != Symbol.FUNCTION) {
-      error.signal("'function' expected");
+      error.signal("'function' expected before " + lexer.token);
+    }
+    else{
+      lexer.nextToken();
     }
 
-    lexer.nextToken();
 
     if (lexer.token != Symbol.IDENT) {
-      error.signal("Function id expected");
+      error.signal("Function Id expected before " + lexer.token);
+    }
+    else{
+      lexer.nextToken();
     }
 
     // name of the identifier
     String id = lexer.getStringValue();
-    lexer.nextToken();
 
-    if (lexer.token == Symbol.LEFTPAR) {
+    if (lexer.token == Symbol.LEFTBRACE){
+      //Se o token atual é {, entao nao tem parametros nem retorno
+      arrayStatList = statList();
+      return new Function( id, arrayParamList, type, arrayStatList );
+    }
+    else if (lexer.token == Symbol.LEFTPAR) {
+      //Verifica os parametros
       lexer.nextToken();
       arrayParamList = paramList();
 
-      if (lexer.token != Symbol.RIGHTPAR)
-        error.signal(") expected");
-
-      lexer.nextToken();
+      if (lexer.token != Symbol.RIGHTPAR){
+        error.signal(") expected before " + lexer.token);
+      }
+      else{
+        lexer.nextToken();
+      }
     }
 
-    if (lexer.token == Symbol.ARROW) {
+    if (lexer.token == Symbol.LEFTBRACE){
+      //Se o token atual é {, entao nao tem retorno
+      arrayStatList = statList();
+      return new Function( id, arrayParamList, type, arrayStatList );
+    }
+    else if (lexer.token == Symbol.ARROW) {
+      //verifica o retorno
       lexer.nextToken();
       type = type();
+    }
+
+    if (lexer.token == Symbol.LEFTBRACE){
+      //Se o token atual é {, entao na possui erros
+      arrayStatList = statList();
+      return new Function( id, arrayParamList, type, arrayStatList );
+    }
+    else{
+      //Esta faltando algo no cabecalho da funcao
+      error.signal("'(' or '->' expected before " + lexer.token);
     }
 
     // don't need nextToken(), has in end of type()
@@ -104,19 +132,22 @@ public class Compiler {
 
   private void paramDec(ArrayList<Variable> paramList) {
     /* ParamDec ::= Id ":" Type */
-
     if (lexer.token != Symbol.IDENT) {
-      error.signal("Id expected");
+      error.signal("Id expected before " + lexer.token);
+    }
+    else {
+      lexer.nextToken();
     }
 
     // name of the identifier
     String id = lexer.getStringValue();
-    lexer.nextToken();
 
     if (lexer.token != Symbol.COLON) {
-      error.signal(": expected");
+      error.signal(": expected before " + lexer.token);
     }
-    lexer.nextToken();
+    else {
+      lexer.nextToken();
+    }
 
     // get the type of the variable
     Type typeVar = type();  // end of type has nextToken()
@@ -142,11 +173,12 @@ public class Compiler {
         result = Type.stringType;
         break;
       default :  // only supports the above types
-        error.signal("Type expected");
+        error.signal("Type expected: Int, Boolean or String");
         result = null;
     }
 
     lexer.nextToken();
+
     return result;
   }
 
@@ -158,8 +190,18 @@ public class Compiler {
     ArrayList<Statement> stmt = new ArrayList<Statement>(); // Statement is abstract class
 
     if (lexer.token != Symbol.LEFTBRACE)
-      error.signal("{ expected");
-    lexer.nextToken();
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("{ expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING){
+        error.signal("{ expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("{ expected before " + lexer.token);
+      }
+    else{
+      lexer.nextToken();
+    }
 
     while (lexer.token == Symbol.IDENT || lexer.token == Symbol.LITERALINT || lexer.token == Symbol.TRUE ||
             lexer.token == Symbol.FALSE || lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.RETURN ||
@@ -169,9 +211,10 @@ public class Compiler {
     }
 
     if (lexer.token != Symbol.RIGHTBRACE)
-      error.signal("} expected");
-
-    lexer.nextToken();
+      error.signal("} expected before " + lexer.token);
+    else{
+      lexer.nextToken();
+    }
 
     return stmt;
   }
@@ -242,9 +285,12 @@ public class Compiler {
     ArrayList<Statement> slLeft = new ArrayList<Statement>();
     ArrayList<Statement> slRight = new ArrayList<Statement>();
 
-    if (lexer.token != Symbol.IF)
+    if (lexer.token != Symbol.IF){
       error.signal("'if' expected");
-    lexer.nextToken();
+    }
+    else{
+      lexer.nextToken();
+    }
 
     Expr e = expr();
     slLeft = statList();
@@ -437,7 +483,7 @@ public class Compiler {
     switch (lexer.token) {
       case LITERALINT:
         int number = lexer.getNumberValue();
-	String n = lexer.getStringValue();
+	      String n = lexer.getStringValue();
         lexer.nextToken();
         return new NumberExpr(number);
      case TRUE :

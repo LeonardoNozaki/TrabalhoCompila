@@ -18,9 +18,9 @@ import Lexer.*;
 public class ExprAdd {
 
     public ExprAdd(ArrayList<ExprMult> expr, Symbol symbol, Type type) {
-        this.expr = expr;
-        this.symbol = symbol;
-	this.type = type;
+      this.expr = expr;
+      this.symbol = symbol;
+	    this.type = type;
     }
 
     public void genC(PW pw) {

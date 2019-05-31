@@ -1,37 +1,37 @@
 function constante -> Int{
-	var valor1 : Int;
-	var valor2 : Int;
-	valor1 = 1 * + 2 + +5 * - 4;
-	valor2 = 10 / 2 - 20 /  - 5;
-	if valor1 or valor 2 != 10 {
-		return valor1;
+	var valorA : Int;
+	var valorB : Int;
+	valorA = 1 * + 2 + +5 * - 4;
+	valorB = 10 / 2 - 20 /  - 5;
+	if valorA or valorB != 10 {
+		return valorA;
 	}
-	return valor2;
+	return valorB;
 }
 
 
 //Funcao de multiplicar dois valores utilizandos dois meios diferentes
-function multiplicar (mult1 : Int, mult2 : Int, tipo : Boolean) -> Int{
+function multiplicar (multA : Int, multB : Int, tipo : Boolean) -> Int{
 	if tipo == true{
 		var i : Int;
 		i = 1;
 		var total : Int;
 		total = 0;
-		while i <= mult2{
-			total = total + mult1;		
+		while i <= multB{
+			total = total + multA;		
 			i = i + 1;
 		} 
 		return total;
 	}
 	if tipo == false{
 		var total : Int;
-		total = mult1 * mult2;
+		total = multA * multB;
 		return total;
 	}
 }
 
-function maiorIgual(valor1 : Int, valor2: Int) -> Boolean{
-	if valor1 >= valor2{
+function maiorIgual(valorA : Int, valorb: Int) -> Boolean{
+	if valorA >= valorB{
 		return true;
 	}
 	else{
@@ -54,20 +54,20 @@ function calc(oper : Boolean){
 	}
 }
 
-function mensagens(msg1 : String, msg2 : String){
+function mensagens(msgA : String, msgB : String){
 	var aux : String;
 	aux = "Ola, sua mensagem:";
 	write(aux);
-	writeln(msg1);
+	writeln(msgA);
 	write(aux);
-	writeln(msg2);
+	writeln(msgB);
 }
 
-function portaAnd(e1 : Boolean, e2 : Boolean) -> Boolean{
-	e1;
-	e2;
+function portaAnd(eA : Boolean, eB : Boolean) -> Boolean{
+	eA;
+	eB;
 	var resultado : Boolean;
-	if e1 == true and e2 == true {
+	if eA == true and eB == true {
 		resultado = true;
 	}
 	else{

@@ -97,12 +97,16 @@ public class Lexer {
 
         //Comentario de bloco ignora tudo ate que haja:
         //Fim do arquivo ou */
-        while ( input[tokenPos] != '\0' && (input[tokenPos] != '*' && input[tokenPos + 1] != '/')) {
-          if(input[tokenPos] != '\n'){
+        while ( input[tokenPos] != '\0' && !(input[tokenPos] == '*' && input[tokenPos + 1] == '/')) {
+          if(input[tokenPos] == '\n'){
             //Contar o numero de linhas ignoradas
             lineNumber++;
           }
           tokenPos++;
+        }
+
+        if(input[tokenPos] == '*' && input[tokenPos + 1] == '/'){
+          tokenPos = tokenPos + 2;
         }
 
         //Chama a funcao recursivamente para pegar o proximo token
@@ -139,7 +143,7 @@ public class Lexer {
 
           //Nao pode haver uma palavra e um numero em seguida
           if ( Character.isDigit(input[tokenPos]) ) {
-            error.signal("Word followed by a number");
+            error.signal(stringValue + " followed by a number: " + input[tokenPos]);
           }
           while ( Character.isDigit( input[tokenPos] ) ) {
             tokenPos++;
@@ -170,7 +174,7 @@ public class Lexer {
 
           //Nao pode haver um numero e uma letra em seguida
           if ( Character.isLetter( input[tokenPos] )) {
-            error.signal("Number followed by a letter");
+            error.signal(number.toString() + " followed by a letter: " + input[tokenPos]);
           }
           while ( Character.isLetter( input[tokenPos] ) ) {
             tokenPos++;

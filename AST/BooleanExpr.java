@@ -14,13 +14,13 @@
 package AST;
 
 public class BooleanExpr extends ExprLiteral {
-	
+
 	public BooleanExpr( boolean value ) {
 		this.value = value;
 	}
 
 	public void genC( PW pw ) {
-		pw.print( value ? "1" : "0" );
+		pw.out.print( value ? "1" : "0" );
 	}
 
 	public Type getType() {

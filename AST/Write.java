@@ -27,7 +27,7 @@ public class Write extends FuncCall {
  
 	if (size > 0) {
 		if ( id.equals(Symbol.WRITE.toString()) ) {
-		   pw.out.print("printf (\"");
+		   pw.out.print("printf(\"");
 		   int count = 0;
 		   for (Expr e : expr) {
 		       if (e.getType() == Type.integerType)

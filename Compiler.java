@@ -41,7 +41,7 @@ public class Compiler {
 
     Program program = new Program(funcList);
     if ( lexer.token != Symbol.EOF ) {
-      error.signal("EOF expected");
+      error.signal("EOF expected, anything is wrong");
     }
     return program;
   }
@@ -54,7 +54,15 @@ public class Compiler {
     ArrayList<Statement> arrayStatList = null;
 
     if (lexer.token != Symbol.FUNCTION) {
-      error.signal("'function' expected before " + lexer.token);
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("'function' expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("'function' expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("'function' expected before " + lexer.token);
+      }
     }
     else{
       lexer.nextToken();
@@ -62,7 +70,15 @@ public class Compiler {
 
 
     if (lexer.token != Symbol.IDENT) {
-      error.signal("Function Id expected before " + lexer.token);
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("Function Id  expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("Function Id  expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("Function Id  expected before " + lexer.token);
+      }
     }
     else{
       lexer.nextToken();
@@ -82,7 +98,15 @@ public class Compiler {
       arrayParamList = paramList();
 
       if (lexer.token != Symbol.RIGHTPAR){
-        error.signal(") expected before " + lexer.token);
+        if(lexer.token == Symbol.LITERALINT){
+          error.signal(") expected before " + lexer.getNumberValue());
+        }
+        else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+          error.signal(") expected before " + lexer.getStringValue());
+        }
+        else{
+          error.signal(")  expected before " + lexer.token);
+        }
       }
       else{
         lexer.nextToken();
@@ -107,7 +131,15 @@ public class Compiler {
     }
     else{
       //Esta faltando algo no cabecalho da funcao
-      error.signal("'(' or '->' expected before " + lexer.token);
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("( or -> expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("( or -> expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("( or ->  expected before " + lexer.token);
+      }
     }
 
     // don't need nextToken(), has in end of type()
@@ -133,7 +165,15 @@ public class Compiler {
   private void paramDec(ArrayList<Variable> paramList) {
     /* ParamDec ::= Id ":" Type */
     if (lexer.token != Symbol.IDENT) {
-      error.signal("Id expected before " + lexer.token);
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("Id expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("Id expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("Id expected before " + lexer.token);
+      }
     }
     else {
       lexer.nextToken();
@@ -143,7 +183,15 @@ public class Compiler {
     String id = lexer.getStringValue();
 
     if (lexer.token != Symbol.COLON) {
-      error.signal(": expected before " + lexer.token);
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal(": expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal(": expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal(": expected before " + lexer.token);
+      }
     }
     else {
       lexer.nextToken();
@@ -189,16 +237,17 @@ public class Compiler {
 
     ArrayList<Statement> stmt = new ArrayList<Statement>(); // Statement is abstract class
 
-    if (lexer.token != Symbol.LEFTBRACE)
+    if (lexer.token != Symbol.LEFTBRACE){
       if(lexer.token == Symbol.LITERALINT){
         error.signal("{ expected before " + lexer.getNumberValue());
       }
-      else if(lexer.token == Symbol.LITERALSTRING){
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
         error.signal("{ expected before " + lexer.getStringValue());
       }
       else{
         error.signal("{ expected before " + lexer.token);
       }
+    }
     else{
       lexer.nextToken();
     }
@@ -210,12 +259,21 @@ public class Compiler {
       stmt.add(stat());
     }
 
-    if (lexer.token != Symbol.RIGHTBRACE)
-      error.signal("} expected before " + lexer.token);
+    if (lexer.token != Symbol.RIGHTBRACE){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("} expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("} expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("} expected before " + lexer.token);
+      }
+    }
     else{
       lexer.nextToken();
     }
-
+     
     return stmt;
   }
 
@@ -256,27 +314,48 @@ public class Compiler {
       right = expr();
     }
 
-    if (lexer.token != Symbol.SEMICOLON)
-      error.signal("; expected");
-
-    lexer.nextToken();
-
+    if (lexer.token != Symbol.SEMICOLON){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("; or = expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("; or = expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("; or = expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
     return new AssignExprStat( left, right );
   }
 
   private ReturnStat returnStat() {
     /* ReturnStat ::= "return" Expr ";" */
-    if (lexer.token != Symbol.RETURN)
+    if (lexer.token != Symbol.RETURN){
       error.signal("'return' expected");
-    lexer.nextToken();
-
+    }
+    else{
+      lexer.nextToken();
+    }
+    
     Expr e = expr();
 
-    if (lexer.token != Symbol.SEMICOLON)
-      error.signal("; expected");
-
-    lexer.nextToken();
-
+    if (lexer.token != Symbol.SEMICOLON){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("; expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("; expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("; expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
     return new ReturnStat(e);
   }
 
@@ -305,28 +384,61 @@ public class Compiler {
   private VarDecStat varDecStat() {
     // VarDecStat ::= "var" Id ":" Type ";"
 
-    if (lexer.token != Symbol.VAR)
+    if (lexer.token != Symbol.VAR){
       error.signal("'var' expected");
+    }
+    else{
+      lexer.nextToken();
+    }
 
-    lexer.nextToken();
-
-    if (lexer.token != Symbol.IDENT)
-      error.signal("Id expected");
-
+    if (lexer.token != Symbol.IDENT){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("Id expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("Id expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("Id expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
     // name of the identifier
     String id = lexer.getStringValue();
-    lexer.nextToken();
-
-    if (lexer.token != Symbol.COLON)
-      error.signal(": expected");
-
-    lexer.nextToken();
+    
+    if (lexer.token != Symbol.COLON){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal(": expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal(": expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal(": expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
     // get the type
     Type typeVar = type();
 
-    if (lexer.token != Symbol.SEMICOLON)
-      error.signal("; expected");
-    lexer.nextToken();
+    if (lexer.token != Symbol.SEMICOLON){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("; expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("; expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("; expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
 
     return new VarDecStat( id, typeVar );
   }
@@ -336,10 +448,12 @@ public class Compiler {
     // WhileStat ::= "while" Expr StatList
     ArrayList<Statement> sl = new ArrayList<Statement>();
 
-    if (lexer.token != Symbol.WHILE)
+    if (lexer.token != Symbol.WHILE){
       error.signal("'while' expected");
-
-    lexer.nextToken();
+    }
+    else{
+      lexer.nextToken();
+    }
     Expr e = expr();
 
     sl = statList();
@@ -467,8 +581,9 @@ public class Compiler {
       case WRITELN:
         String id = lexer.getStringValue();
         lexer.nextToken();
-        if (lexer.token == Symbol.LEFTPAR)
+        if (lexer.token == Symbol.LEFTPAR){
           return funcCall(id);
+        }
         else{
           Variable v = new Variable(id);
           return new VariableExpr(v);
@@ -507,10 +622,20 @@ public class Compiler {
     ArrayList<Expr> expr = new ArrayList<Expr>();
 
     // when funcCall is called token already is (
-    if (lexer.token != Symbol.LEFTPAR)
-      error.signal("( expected");
-
-    lexer.nextToken();
+    if (lexer.token != Symbol.LEFTPAR){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("( expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("( expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("( expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
 
     if (lexer.token == Symbol.IDENT || lexer.token == Symbol.LITERALINT || lexer.token == Symbol.FALSE ||
         lexer.token == Symbol.TRUE || lexer.token == Symbol.LITERALSTRING) {
@@ -521,13 +646,24 @@ public class Compiler {
       }
     }
 
-    if (lexer.token != Symbol.RIGHTPAR)
-      error.signal(") expected");
+    if (lexer.token != Symbol.RIGHTPAR){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal(") expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal(") expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal(") expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
 
-    lexer.nextToken();
-
-    if (id.equals(Symbol.WRITE.toString()) || id.equals(Symbol.WRITELN.toString()))
-	return new Write( expr, id );
+    if (id.equals(Symbol.WRITE.toString()) || id.equals(Symbol.WRITELN.toString())){
+      return new Write( expr, id );
+    }
 
     return new FuncCall( expr, id);
   }

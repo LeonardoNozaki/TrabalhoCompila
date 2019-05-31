@@ -1,0 +1,47 @@
+/* ================================================================== *
+ *  Universidade Federal de Sao Carlos - UFSCar, Sorocaba
+ *
+ *  Disciplina: Programação
+ *
+ *  Lista 04 - Exercício 05 - Senha
+ *
+ *  Instruções
+ *  ----------
+ *
+ *  Este arquivo contém o código que auxiliará no desenvolvimento do
+ *  exercício. Você precisará completar as partes requisitadas.
+ *
+ * ================================================================== *
+ *  Dados do aluno:
+ *
+ *  RA:
+ *  Nome: 
+ *
+ * ================================================================== */
+
+function main -> Int{
+	var flag : Int;
+	var senha : String;
+
+	while flag == 0 {
+		count = -1;
+		flag = 0;
+
+		while senha != "\n" {
+			scanf(ler);
+			if ler >= "a"{
+				flag = 1;
+			}
+			count= count + 1;
+		}
+		if flag {
+			writeln(senha);
+		}
+		else{
+			write(count);
+		}
+	}
+
+	return 0;
+}
+ 

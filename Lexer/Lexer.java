@@ -90,7 +90,7 @@ public class Lexer {
         }
 
         //Chama a funcao recursivamente para pegar o proximo token
-        //Pois esse token era o de um comentario em linha
+        //Pois esse token era o de um comentario em linha.
         nextToken();
       } else if ( input[tokenPos] == '/' && input[tokenPos + 1] == '*' ) {
         //Verifica se é um comentario de bloco

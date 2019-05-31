@@ -539,3 +539,4 @@ public class Compiler {
   private Lexer lexer;
   private CompilerError error;
 }
+

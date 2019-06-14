@@ -18,9 +18,10 @@ import java.io.*;
 
 public class CompilerError {
 
-  public CompilerError( PrintWriter out ) {
+  public CompilerError( PrintWriter out, String nomeArq) {
     // output of an error is done in out
     this.out = out;
+    this.nomeArq = nomeArq;
     flagC = true;
   }
 
@@ -32,9 +33,17 @@ public class CompilerError {
     if(flagC == false){
       out.println();
     }
-    out.println("Error at line " + lexer.getLineNumber() + ": ");
+/*
+    \n<nome do arquivo>:<numero da linha de erro>:<mensagem de erro>\n<linha do codigo com erro>
+
+    Em <nome do arquivo> nao é para conter o caminho do arquivo!
+    Em <linha do codigo com erro> pode manter o padrao do compilador, de imprimir o codigo proximo ao
+ponto onde o token estava no momento que o erro ocorreu.
+    O compilador pode continuar lancando excecao java.lang.RuntimeException, mas a mensagem de erro deve
+estar no formato citado.*/
+
+    out.println(nomeArq + ": " + lexer.getLineNumber() + ": " + strMessage);
     out.println(lexer.getCurrentLine());
-    out.println( strMessage );
 
     if ( out.checkError() ) {
       System.out.println("Error in signaling an error");
@@ -48,5 +57,6 @@ public class CompilerError {
 
   private boolean flagC;
   private Lexer lexer;
+  private String nomeArq;
   PrintWriter out;
 }

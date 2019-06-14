@@ -113,7 +113,18 @@ public class Main {
         //Chama o metodo compile,
         //passando todo o programa de entrada num array de caracter
         //passando onde sera escrito os erros
-        program = compiler.compile(input, printWriter );
+        String arquivo = args[0];
+        String nomeFinal = "";
+        for(int i = 0; i < arquivo.length(); i++){
+          if(arquivo.charAt(i) == '/'){
+            nomeFinal = "";
+          }
+          else{
+            nomeFinal += arquivo.charAt(i);
+          }
+        }
+
+        program = compiler.compile(input, printWriter, nomeFinal);
       } catch ( RuntimeException e ) {
         System.out.println(e);
       }

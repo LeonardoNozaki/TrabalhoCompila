@@ -17,12 +17,14 @@ import java.lang.Character;
 import Error.*;
 import Lexer.*;
 import java.io.*;
+import AuxComp.SymbolTable;
 
 public class Compiler {
   // compile must receive an input with an character less than
   // p_input.lenght
-  public Program compile( char []input, PrintWriter outError ) {
-    error = new CompilerError( outError );
+  public Program compile( char []input, PrintWriter outError, String nomeArq ) {
+    symbolTable = new SymbolTable();
+    error = new CompilerError( outError, nomeArq);
     lexer = new Lexer(input, error);
     error.setLexer(lexer);
     lexer.nextToken();
@@ -43,6 +45,9 @@ public class Compiler {
     if ( lexer.token != Symbol.EOF ) {
       error.signal("EOF expected, anything is wrong");
     }
+    if(symbolTable.getInGlobal("main") == null){
+      error.signal("Source code must have a Function called main");
+    }
     return program;
   }
 
@@ -52,6 +57,8 @@ public class Compiler {
     ArrayList<Variable> arrayParamList = null;
     Type type = null;
     ArrayList<Statement> arrayStatList = null;
+    String id = "";
+    Function s = null;
 
     if (lexer.token != Symbol.FUNCTION) {
       if(lexer.token == Symbol.LITERALINT){
@@ -71,26 +78,34 @@ public class Compiler {
 
     if (lexer.token != Symbol.IDENT) {
       if(lexer.token == Symbol.LITERALINT){
-        error.signal("Function Id  expected before " + lexer.getNumberValue());
+        error.signal("Function Id expected before " + lexer.getNumberValue());
       }
       else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
-        error.signal("Function Id  expected before " + lexer.getStringValue());
+        error.signal("Function Id expected before " + lexer.getStringValue());
       }
       else{
-        error.signal("Function Id  expected before " + lexer.token);
+        error.signal("Function Id expected before " + lexer.token);
       }
     }
     else{
+      id = (String) lexer.getStringValue();
+      s = (Function) symbolTable.getInGlobal(id);
+      if(s != null){
+        error.signal("Function " + id + "has already been declared");
+      }
       lexer.nextToken();
+      if ( id.compareTo("main") == 0 && lexer.token != Symbol.LEFTBRACE){
+        error.signal("main must be a parameterless and returnless function");
+      }
     }
-
-    // name of the identifier
-    String id = lexer.getStringValue();
 
     if (lexer.token == Symbol.LEFTBRACE){
       //Se o token atual é {, entao nao tem parametros nem retorno
       arrayStatList = statList();
-      return new Function( id, arrayParamList, type, arrayStatList );
+      s = new Function( id, arrayParamList, type, arrayStatList );
+      symbolTable.putInGlobal( id, s );
+      symbolTable.removeLocalIdent();
+      return s;
     }
     else if (lexer.token == Symbol.LEFTPAR) {
       //Verifica os parametros
@@ -116,7 +131,10 @@ public class Compiler {
     if (lexer.token == Symbol.LEFTBRACE){
       //Se o token atual é {, entao nao tem retorno
       arrayStatList = statList();
-      return new Function( id, arrayParamList, type, arrayStatList );
+      s =  new Function( id, arrayParamList, type, arrayStatList );
+      symbolTable.putInGlobal( id, s );
+      symbolTable.removeLocalIdent();
+      return s;
     }
     else if (lexer.token == Symbol.ARROW) {
       //verifica o retorno
@@ -127,7 +145,10 @@ public class Compiler {
     if (lexer.token == Symbol.LEFTBRACE){
       //Se o token atual é {, entao na possui erros
       arrayStatList = statList();
-      return new Function( id, arrayParamList, type, arrayStatList );
+      s = new Function( id, arrayParamList, type, arrayStatList );
+      symbolTable.putInGlobal( id, s );
+      symbolTable.removeLocalIdent();
+      return s;
     }
     else{
       //Esta faltando algo no cabecalho da funcao
@@ -146,7 +167,10 @@ public class Compiler {
 
     arrayStatList = statList();
 
-    return new Function( id, arrayParamList, type, arrayStatList );
+    s = new Function( id, arrayParamList, type, arrayStatList );
+    symbolTable.putInGlobal( id, s );
+    symbolTable.removeLocalIdent();
+    return s;
   }
 
   private ArrayList<Variable> paramList() {
@@ -273,7 +297,7 @@ public class Compiler {
     else{
       lexer.nextToken();
     }
-     
+
     return stmt;
   }
 
@@ -339,7 +363,7 @@ public class Compiler {
     else{
       lexer.nextToken();
     }
-    
+
     Expr e = expr();
 
     if (lexer.token != Symbol.SEMICOLON){
@@ -407,7 +431,7 @@ public class Compiler {
     }
     // name of the identifier
     String id = lexer.getStringValue();
-    
+
     if (lexer.token != Symbol.COLON){
       if(lexer.token == Symbol.LITERALINT){
         error.signal(": expected before " + lexer.getNumberValue());
@@ -672,6 +696,7 @@ public class Compiler {
     return error.getFlagC();
   }
 
+  private SymbolTable symbolTable;
   private Lexer lexer;
   private CompilerError error;
 }

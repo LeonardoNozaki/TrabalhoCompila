@@ -91,11 +91,11 @@ public class Compiler {
       id = (String) lexer.getStringValue();
       s = (Function) symbolTable.getInGlobal(id);
       if(s != null){
-        error.signal("Function " + id + "has already been declared");
+        error.signal("Function " + id + " has already been declared");
       }
       lexer.nextToken();
       if ( id.compareTo("main") == 0 && lexer.token != Symbol.LEFTBRACE){
-        error.signal("main must be a parameterless and returnless function");
+        error.signal("function main must be a parameterless and returnless function");
       }
     }
 

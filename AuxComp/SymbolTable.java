@@ -17,7 +17,7 @@ import java.util.*;
 public class SymbolTable {
   public SymbolTable() {
     globalTable = new Hashtable();
-    localTable = new Hashtable();
+    localTable = new ArrayList<Hashtable>();
   }
 
   public Object putInGlobal( String key, Object value ) {
@@ -25,21 +25,46 @@ public class SymbolTable {
   }
 
   public Object putInLocal( String key, Object value ) {
-    return localTable.put(key, value);
+    int size = localTable.size();
+    if(size > 0){
+      aux = localTable.get(size-1);
+      return aux.put(key, value);
+    }
+    return null;
+  }
+
+  public void add(){
+    localTable.add(new Hashtable());
+  }
+
+  public void sub(){
+    int size = localTable.size();
+    if(size > 0){
+      localTable.remove(size-1);
+    }
   }
 
   public Object getInLocal( Object key ) {
-    return localTable.get(key);
+    int size = localTable.size();
+    for(int i = size-1; i >= 0; i--){
+      aux = localTable.get(0);
+      Object o = aux.get(key);
+      if(o != null){
+        return o;
+      }
+    }
+    return null;
   }
 
   public Object getInGlobal( Object key ) {
     return globalTable.get(key);
+
   }
 
   public Object get( String key ) {
     // returns the object corresponding to the key.
     Object result;
-    if ( (result = localTable.get(key)) != null ) {
+    if ( (result = getInLocal(key)) != null ) {
       // found local identifier
       return result;
     }
@@ -54,5 +79,7 @@ public class SymbolTable {
     localTable.clear();
   }
 
-  private Hashtable globalTable, localTable;
+  private Hashtable globalTable;
+  private Hashtable aux;
+  private ArrayList<Hashtable> localTable;
 }

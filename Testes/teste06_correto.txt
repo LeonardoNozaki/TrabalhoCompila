@@ -7,20 +7,27 @@ function fatorial(n : Int) -> Int{
 	}
 }
 
-function imprima(before: Int, valor: Int, after: String) {
+function imprimir(before: Int, valor: Int, after: String) {
 	var i : Int;
+	
 	i = 0;
 	while i < before {
+		var i : Int;
 		write("*");
 		i = i + 1;
 	}
+	
 	writeln("");
 	writeln(valor);
 	writeln(after);
 
 }
 
+function imp{
+
+}
 //Funcao main
 function main{
+	
 	imprima(50, fatorial(5)*2*fatorial(3), " 	fim");
 }

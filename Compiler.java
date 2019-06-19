@@ -275,6 +275,7 @@ public class Compiler {
     else{
       lexer.nextToken();
     }
+    symbolTable.add(); //Acrescente um nivel na pilha de hash das variaveis locais
 
     while (lexer.token == Symbol.IDENT || lexer.token == Symbol.LITERALINT || lexer.token == Symbol.TRUE ||
             lexer.token == Symbol.FALSE || lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.RETURN ||
@@ -282,6 +283,7 @@ public class Compiler {
 	    lexer.token == Symbol.WRITE || lexer.token == Symbol.WRITELN) {
       stmt.add(stat());
     }
+    symbolTable.sub(); //Remove um nivel na pilha de hash das variaveis locais
 
     if (lexer.token != Symbol.RIGHTBRACE){
       if(lexer.token == Symbol.LITERALINT){
@@ -431,6 +433,9 @@ public class Compiler {
     }
     // name of the identifier
     String id = lexer.getStringValue();
+    if(symbolTable.getInLocal(id) != null){
+      error.signal("var " + id + " has already been declared");
+    }
 
     if (lexer.token != Symbol.COLON){
       if(lexer.token == Symbol.LITERALINT){
@@ -464,7 +469,11 @@ public class Compiler {
       lexer.nextToken();
     }
 
-    return new VarDecStat( id, typeVar );
+    VarDecStat v = new VarDecStat( id, typeVar );
+
+    symbolTable.putInLocal(id, v);
+
+    return v;
   }
 
 

@@ -39,6 +39,13 @@ public class Expr {
         return type;
     }
 
+    public boolean isId(){
+      if(this.expr.size() == 1){
+        return this.expr.get(0).isId();
+      }
+      return false;
+    }
+
     private ArrayList<ExprAnd> expr = new ArrayList<ExprAnd>();
     private Symbol symbol;
     private Type type;

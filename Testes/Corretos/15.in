@@ -4,7 +4,7 @@ function imprime(q : Int, w : Int, e : Int, nomeFunc : String){
   writeln(w);
   writeln(e);
   writeln(nomeFunc);
-  writeln("***Fim***")
+  writeln("***Fim***");
 }
 
 function aninhamento(k : Int, l : Int){

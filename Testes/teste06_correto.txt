@@ -12,7 +12,6 @@ function imprimir(before: Int, valor: Int, after: String) {
 	
 	i = 0;
 	while i < before {
-		var i : Int;
 		write("*");
 		i = i + 1;
 	}
@@ -23,9 +22,6 @@ function imprimir(before: Int, valor: Int, after: String) {
 
 }
 
-function imp{
-
-}
 //Funcao main
 function main{
 	

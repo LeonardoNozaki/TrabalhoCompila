@@ -4,7 +4,7 @@ function imprime(q : Int, w : Int, e : Int, nomeFunc : String){
   writeln(w);
   writeln(e);
   writeln(nomeFunc);
-  writeln("***Fim***")
+  writeln("***Fim***");
 }
 
 function aninhamento(k : Int, l : Int) -> Int{
@@ -66,7 +66,7 @@ function main{
   while i != 3{
     imprime (i, i+1, i+2, "i, i+1, i+2");
     i = i + 1;
-    if (i == 2){
+    if i == 2{
       resDois = aninhamento(i, i+1);
     }
   }

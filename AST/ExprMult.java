@@ -39,6 +39,13 @@ public class ExprMult {
         return type;
     }
 
+    public boolean isId(){
+      if(this.expr.size() == 1){
+        return this.expr.get(0).isId();
+      }
+      return false;
+    }
+
     private ArrayList<ExprUnary> expr = new ArrayList<ExprUnary>();
     private Symbol symbol;
     private Type type;

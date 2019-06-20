@@ -27,6 +27,10 @@ public class BooleanExpr extends ExprLiteral {
 		return Type.booleanType;
 	}
 
+  public boolean isId(){
+    return false;
+  }
+
 	public static BooleanExpr True = new BooleanExpr(true);
 	public static BooleanExpr False = new BooleanExpr(false);
 

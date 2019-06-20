@@ -19,31 +19,35 @@ public class FuncCall extends ExprPrimary {
   public FuncCall() {} // default constructor
 
   public FuncCall(ArrayList<Expr> expr, String id) {
-        this.expr = expr;
-        this.id = id;
-    }
+    this.expr = expr;
+    this.id = id;
+  }
 
-    public void genC(PW pw) {
-      pw.out.print(id + "(");
-      int i = 0;
-      int tam = this.expr.size();
-      if(!this.expr.isEmpty()){
+  public void genC(PW pw) {
+    pw.out.print(id + "(");
+    int i = 0;
+    int tam = this.expr.size();
+    if(!this.expr.isEmpty()){
+      this.expr.get(i).genC(pw);
+      i++;
+      while(i < tam){
+        pw.out.print(", ");
         this.expr.get(i).genC(pw);
         i++;
-        while(i < tam){
-          pw.out.print(", ");
-          this.expr.get(i).genC(pw);
-          i++;
-        }
       }
-      pw.out.print(")");
     }
+    pw.out.print(")");
+  }
 
-    public Type getType() {
-        return null;
-    }
+  public Type getType() {
+      return null;
+  }
 
-    private ArrayList<Expr> expr = new ArrayList<Expr>();
-    private String id;
+  public boolean isId(){
+    return false;
+  }
+
+  private ArrayList<Expr> expr = new ArrayList<Expr>();
+  private String id;
 
 }

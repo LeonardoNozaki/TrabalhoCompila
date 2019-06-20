@@ -30,5 +30,9 @@ public class NumberExpr extends ExprLiteral {
 		return Type.integerType;
 	}
 
+  public boolean isId(){
+    return false;
+  }
+
 	private Integer value;
 }

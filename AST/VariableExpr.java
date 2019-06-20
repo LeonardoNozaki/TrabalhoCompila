@@ -15,7 +15,7 @@ package AST;
 
 public class VariableExpr extends ExprPrimary {
 
-  public VariableExpr( Variable v ) {
+  public VariableExpr( VarDecStat v ) {
     this.v = v;
   }
 
@@ -27,5 +27,9 @@ public class VariableExpr extends ExprPrimary {
     return v.getType();
   }
 
-  private Variable v;
+  public boolean isId(){
+    return true;
+  }
+
+  private VarDecStat v;
 }

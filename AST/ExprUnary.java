@@ -34,6 +34,10 @@ public class ExprUnary {
         return type;
     }
 
+    public boolean isId(){
+      return this.expr.isId();
+    }
+
     private ExprPrimary expr;
     private Symbol symbol;
     private Type type;

@@ -36,6 +36,13 @@ public class ExprRel {
         return type;
     }
 
+    public boolean isId(){
+      if(this.right == null){
+        return this.left.isId();
+      }
+      return false;
+    }
+
     private ExprAdd left, right;
     private Symbol symbol;
     private Type type;

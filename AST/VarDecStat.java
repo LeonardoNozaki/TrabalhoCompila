@@ -23,6 +23,22 @@ public class VarDecStat extends Statement {
     pw.println(this.type.getCname() + " " + this.name + ";");
   }
 
+  public VarDecStat( String name ) {
+    this.name = name;
+  }
+
+  public void setType( Type type ) {
+    this.type = type;
+  }
+
+  public String getName() {
+      return name;
+  }
+
+  public Type getType() {
+    return type;
+  }
+
   private String name;
   private Type type;
 }

@@ -31,5 +31,9 @@ public class StringExpr extends ExprLiteral {
 		return Type.stringType;
 	}
 
+  public boolean isId(){
+    return false;
+  }
+
 	private String value;
 }

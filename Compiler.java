@@ -370,13 +370,7 @@ public class Compiler {
       if(left.isId() == false){ //Lado esquerdo nao é variavel
         error.signal("Id expected before " + lexer.token);
       }
-      else{ //Lado esquerdo é uma variavel
-        String name = lexer.getStringValue();
-        VarDecStat v = (VarDecStat) symbolTable.getInLocal( name );
-        if(v == null){
-          error.signal("Variable " + name + " was not declared");
-        }
-      }
+      //Se lado esquerdo for variavel, ja é feito a verificacao de declaração la em baixo
       lexer.nextToken();
       right = expr();
       if (lexer.token != Symbol.SEMICOLON){
@@ -673,7 +667,12 @@ public class Compiler {
           return funcCall(id);
         }
         else{
-          VarDecStat v = new VarDecStat(id);
+          VarDecStat v = (VarDecStat) symbolTable.getInLocal( id );
+          if(v == null){
+            error.signal("Variable " + id + " was not declared");
+            VarDecStat v1 = new VarDecStat(id);
+            return new VariableExpr(v1);
+          }
           return new VariableExpr(v);
         }
       default:

@@ -367,8 +367,15 @@ public class Compiler {
     Expr right = null;
 
     if (lexer.token == Symbol.ASSIGN) {
-      if(left.isId() == false){
+      if(left.isId() == false){ //Lado esquerdo nao é variavel
         error.signal("Id expected before " + lexer.token);
+      }
+      else{ //Lado esquerdo é uma variavel
+        String name = lexer.getStringValue();
+        VarDecStat v = (VarDecStat) symbolTable.getInLocal( name );
+        if(v == null){
+          error.signal("Variable " + name + " was not declared");
+        }
       }
       lexer.nextToken();
       right = expr();

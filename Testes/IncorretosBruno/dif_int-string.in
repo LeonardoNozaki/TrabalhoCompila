@@ -1,0 +1,12 @@
+function main {
+
+	var a : Int;
+	var b : String;
+
+	a = 5;
+	b = "ola";
+
+	if a != b {
+		a = 7;
+	}
+}

@@ -1,0 +1,12 @@
+function main {
+
+	var a : Int;
+	var b : Int;
+
+	a = 5;
+	b = 6;
+
+	if a > b {
+		a = 7;
+	}
+}

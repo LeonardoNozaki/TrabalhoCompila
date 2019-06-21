@@ -20,17 +20,16 @@ public class SymbolTable {
     localTable = new ArrayList<Hashtable>();
   }
 
-  public Object putInGlobal( String key, Object value ) {
-    return globalTable.put(key, value);
+  public void putInGlobal( String key, Object value ) {
+    globalTable.put(key, value);
   }
 
-  public Object putInLocal( String key, Object value ) {
+  public void putInLocal( String key, Object value ) {
     int size = localTable.size();
     if(size > 0){
       aux = localTable.get(size-1);
-      return aux.put(key, value);
+      aux.put(key, value);
     }
-    return null;
   }
 
   public void add(){
@@ -47,7 +46,7 @@ public class SymbolTable {
   public Object getInLocal( Object key ) {
     int size = localTable.size();
     for(int i = size-1; i >= 0; i--){
-      aux = localTable.get(0);
+      aux = localTable.get(i);
       Object o = aux.get(key);
       if(o != null){
         return o;

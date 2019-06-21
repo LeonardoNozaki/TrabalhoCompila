@@ -10,7 +10,7 @@ function imprima(before: Int, valor: Int, after: String) {
 	writeln(after);
 }
 
-function calculo(){
+function calculo{
 	var a : Int;
 	var b : Int;
 	2 = 10 + 5; //Erro, valor 2 nao pode receber uma atribuicao

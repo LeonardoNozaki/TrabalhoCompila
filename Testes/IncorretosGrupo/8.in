@@ -1,0 +1,16 @@
+function main {
+	var i : Int;
+	var i : Int;
+}
+function imprimir(before: Int, valor: Int, after: String) {
+	var i : Int;
+	var i : Int;
+	i = 0;
+	while i < before {
+		write("*");
+		i = i + 1;
+	}
+	writeln("");
+	writeln(valor);
+	writeln(after);
+}

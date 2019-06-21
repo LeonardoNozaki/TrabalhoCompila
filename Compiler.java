@@ -437,6 +437,7 @@ public class Compiler {
       }
 
       right = expr();
+
       if (lexer.token != Symbol.SEMICOLON){
         if(lexer.token == Symbol.LITERALINT){
           error.signal("; expected before " + lexer.getNumberValue());
@@ -469,15 +470,18 @@ public class Compiler {
 
     if ( ! checkAssignment( left.getType(), right.getType() ) ){
       //error.signal("Type error in assignment");
-      error.signal("Assignment: Left Type is different to Right Type");
+      error.signal("Assignment: Void Type or Left Type is different to Right Type");
     }
 
     return new AssignExprStat( left, right, 0);
   }
 
   private boolean checkAssignment( Type varType, Type exprType ) {
+    //System.out.println (varType.getCname + " " + exprType.getCname);
     if ( varType == Type.undefinedType || exprType == Type.undefinedType )
       return true;
+    else if(varType == Type.voidType || exprType == Type.voidType)
+      return false;
     else
       return varType == exprType;
   }
@@ -636,22 +640,23 @@ public class Compiler {
   private Expr expr() {
     /* Expr ::= ExprAnd {”or” ExprAnd} */
     ArrayList<ExprAnd> expr = new ArrayList<ExprAnd>();
-    Type type;
     ExprAnd right = null;
 
     ExprAnd left = exprAnd();
-    type = left.getType();
+    Type type = left.getType();
     expr.add(left);
 
     while (lexer.token == Symbol.OR) {
       lexer.nextToken();
-      expr.add(right = exprAnd());
+      right = exprAnd();
+      expr.add(right);
       // analise semantica
-      if ( ! checkBooleanExpr( type, right.getType() ) )
-        error.signal("Expression of boolean type expected");
+      if ( ! checkBooleanExpr( type, right.getType() ) ){
+        error.signal("Expression of boolean type expected before " + lexer.token);
+      }
     }
 
-    return new Expr( expr, Symbol.OR, type );
+    return new Expr( expr );
   }
 
   private boolean checkBooleanExpr( Type left, Type right ) {
@@ -673,13 +678,15 @@ public class Compiler {
 
     while (lexer.token == Symbol.AND) {
       lexer.nextToken();
-      expr.add(right = exprRel());
+      right = exprRel();
+      expr.add(right);
       // analise semantica
-      if ( ! checkBooleanExpr( type, right.getType() ) )
-        error.signal("Expression of boolean type expected");
+      if ( ! checkBooleanExpr( type, right.getType() ) ){
+        error.signal("Expression of boolean type expected before " + lexer.token);
+      }
     }
 
-    return new ExprAnd( expr, Symbol.AND, type );
+    return new ExprAnd( expr );
   }
 
   private ExprRel exprRel() {
@@ -696,18 +703,20 @@ public class Compiler {
       op = lexer.token;
       lexer.nextToken();
       right = exprAdd();
-
-      if ( ! checkRelExpr(type, right.getType() ) )
-        error.signal("Type error in expression");
+      if ( ! checkRelExpr(type, right.getType() ) ){
+        error.signal("Comparation of differents types or string types before " + lexer.token);
+      }
     }
 
-    return new ExprRel( left, right, op, type );
+    return new ExprRel( left, right, op);
   }
 
   private boolean checkRelExpr( Type left, Type right ) {
     if ( left == Type.undefinedType || right == Type.undefinedType )
       return true;
     else if ( left == Type.stringType || right == Type.stringType )
+      return false;
+    else if(left == Type.voidType || right == Type.voidType)
       return false;
     else
       return left == right;
@@ -728,12 +737,14 @@ public class Compiler {
     while (lexer.token == Symbol.PLUS || lexer.token == Symbol.MINUS){
       op.add(lexer.token);
       lexer.nextToken();
-      expr.add(right = exprMult());
-      if ( ! checkMathExpr( type, right.getType() ) )
-        error.signal("Expression of type integer expected");
+      right = exprMult();
+      expr.add(right);
+      if ( ! checkMathExpr( type, right.getType() ) ){
+        error.signal("Expression of type integer expected before " + lexer.token);
+      }
     }
 
-    return new ExprAdd( expr, op, type );
+    return new ExprAdd( expr, op);
   }
 
   private boolean checkMathExpr( Type left, Type right ) {
@@ -741,6 +752,8 @@ public class Compiler {
     boolean orRight = right == Type.integerType || right == Type.undefinedType;
 
     if ( left == Type.stringType || right == Type.stringType )
+      return false;
+    else if(left == Type.voidType || right == Type.voidType)
       return false;
     return orLeft && orRight;
   }
@@ -757,15 +770,17 @@ public class Compiler {
     type = left.getType();
     expr.add(left);
 
-    while (lexer.token == Symbol.PLUS || lexer.token == Symbol.MINUS){
+    while (lexer.token == Symbol.MULT || lexer.token == Symbol.DIV){
       op.add(lexer.token);
       lexer.nextToken();
-      expr.add(right = exprUnary());
-      if ( ! checkMathExpr( type, right.getType() ) )
-        error.signal("Expression of type integer expected");
+      right = exprUnary();
+      expr.add(right);
+      if ( ! checkMathExpr( type, right.getType() ) ){
+        error.signal("Expression of type integer expected before " + lexer.token);
+      }
     }
 
-    return new ExprMult( expr, op, type );
+    return new ExprMult( expr, op );
   }
 
   private ExprUnary exprUnary() {
@@ -782,11 +797,12 @@ public class Compiler {
 
     // se teve operação então só pode ser int
     if (op != null){
-      if ( type != Type.integerType )
-        error.signal("Expression of type integer expected");
+      if ( type != Type.integerType ){
+        error.signal("Type integer expected before " + lexer.token);
+      }
     }
 
-    return new ExprUnary(exprPrimary, op, type);
+    return new ExprUnary(exprPrimary, op);
   }
 
   private ExprPrimary exprPrimary() {
@@ -886,8 +902,14 @@ public class Compiler {
     if (id.equals(Symbol.WRITE.toString()) || id.equals(Symbol.WRITELN.toString())){
       return new Write( expr, id );
     }
-
-    return new FuncCall( expr, id);
+    Function f = (Function) symbolTable.getInGlobal(id);
+    if(f != null){ //Funcao ja declarada
+      return new FuncCall( expr, id, f.getType());
+    }
+    else{
+      error.signal("Function " + id + " was not declared");
+    }
+    return new FuncCall( expr, id, Type.undefinedType);
   }
 
   private void read() {

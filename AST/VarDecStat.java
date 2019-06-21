@@ -32,6 +32,7 @@ public class VarDecStat extends Statement {
   public VarDecStat( String name ) {
     this.name = name;
     this.parameter = false;
+    this.type = Type.undefinedType;
   }
 
   public void setType( Type type ) {

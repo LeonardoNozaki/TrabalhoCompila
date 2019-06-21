@@ -21,15 +21,22 @@ public class Function {
     this.paramList = paramList;
     this.type = type;
     this.statList = statList;
+    if(type == null){
+      this.type = Type.voidType;
+    }
+  }
+
+  public Type getType(){
+    return this.type;
   }
 
   public void genC(PW pw) {
       int i = 0;
       int tam;
-      if(this.type == null)
+      /*if(this.type == null)
         pw.print("void ");
-      else
-        pw.print(this.type.getCname() + " ");
+      else*/
+      pw.print(this.type.getCname() + " ");
 
       pw.out.print(this.id);
       pw.out.print("(");

@@ -17,10 +17,9 @@ import Lexer.*;
 
 public class ExprUnary {
 
-    public ExprUnary(ExprPrimary expr, Symbol symbol, Type type) {
+    public ExprUnary(ExprPrimary expr, Symbol symbol) {
         this.expr = expr;
         this.symbol = symbol;
-        this.type = type;
     }
 
     public void genC(PW pw) {
@@ -31,7 +30,10 @@ public class ExprUnary {
     }
 
     public Type getType() {
-        return type;
+      if(symbol != null){
+        return Type.integerType;
+      }
+      return expr.getType();
     }
 
     public boolean isId(){
@@ -40,5 +42,4 @@ public class ExprUnary {
 
     private ExprPrimary expr;
     private Symbol symbol;
-    private Type type;
 }

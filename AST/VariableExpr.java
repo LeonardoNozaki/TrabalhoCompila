@@ -24,7 +24,10 @@ public class VariableExpr extends ExprPrimary {
   }
 
   public Type getType() {
-    return v.getType();
+    if(v != null){
+      return v.getType();
+    }
+    return Type.undefinedType;
   }
 
   public boolean isId(){

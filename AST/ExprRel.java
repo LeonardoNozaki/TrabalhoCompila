@@ -17,11 +17,10 @@ import Lexer.*;
 
 public class ExprRel {
 
-    public ExprRel(ExprAdd left, ExprAdd right, Symbol symbol, Type type) {
+    public ExprRel(ExprAdd left, ExprAdd right, Symbol symbol) {
         this.left = left;
         this.right = right;
         this.symbol = symbol;
-        this.type = type;
     }
 
     public void genC(PW pw) {
@@ -33,7 +32,14 @@ public class ExprRel {
     }
 
     public Type getType() {
-        return type;
+      if ( symbol == Symbol.EQ || symbol == Symbol.NEQ || symbol == Symbol.LE ||
+        symbol == Symbol.LT || symbol == Symbol.GE || symbol == Symbol.GT ){
+        return Type.booleanType;
+      }
+      if(left == null){
+        return Type.undefinedType;
+      }
+      return this.left.getType();
     }
 
     public boolean isId(){
@@ -45,5 +51,4 @@ public class ExprRel {
 
     private ExprAdd left, right;
     private Symbol symbol;
-    private Type type;
 }

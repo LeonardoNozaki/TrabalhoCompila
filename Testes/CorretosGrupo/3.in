@@ -2,7 +2,7 @@
 function main {
 	var flag : Int;
 	var senha : String;
-
+	var count : Int;
 	while flag == 0 {
 		count = -1;
 		flag = 0;

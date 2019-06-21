@@ -17,10 +17,8 @@ import Lexer.*;
 
 public class ExprAnd {
 
-    public ExprAnd(ArrayList<ExprRel> expr, Symbol symbol, Type type) {
+    public ExprAnd(ArrayList<ExprRel> expr) {
         this.expr = expr;
-        this.symbol = symbol;
-        this.type = type;
     }
 
     public void genC(PW pw) {
@@ -36,7 +34,17 @@ public class ExprAnd {
     }
 
     public Type getType() {
-        return type;
+      if(expr == null){
+        return Type.undefinedType;
+      }
+      int tam = this.expr.size();
+      if(tam > 1){ //um ou mais operadores AND torna a expr Boolean
+        return Type.booleanType;
+      }
+      else if(tam == 1){ //Nenhum operador AND, precisa ver o nivel de baixo
+        return this.expr.get(0).getType();
+      }
+      return Type.undefinedType;
     }
 
     public boolean isId(){
@@ -47,6 +55,4 @@ public class ExprAnd {
     }
 
     private ArrayList<ExprRel>expr = new ArrayList<ExprRel>();
-    private Symbol symbol;
-    private Type type;
 }

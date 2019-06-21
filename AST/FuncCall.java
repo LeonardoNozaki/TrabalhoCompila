@@ -18,9 +18,10 @@ import Lexer.*;
 public class FuncCall extends ExprPrimary {
   public FuncCall() {} // default constructor
 
-  public FuncCall(ArrayList<Expr> expr, String id) {
+  public FuncCall(ArrayList<Expr> expr, String id, Type type) {
     this.expr = expr;
     this.id = id;
+    this.type = type;
   }
 
   public void genC(PW pw) {
@@ -40,7 +41,7 @@ public class FuncCall extends ExprPrimary {
   }
 
   public Type getType() {
-      return null;
+      return type;
   }
 
   public boolean isId(){
@@ -49,5 +50,5 @@ public class FuncCall extends ExprPrimary {
 
   private ArrayList<Expr> expr = new ArrayList<Expr>();
   private String id;
-
+  private Type type;
 }

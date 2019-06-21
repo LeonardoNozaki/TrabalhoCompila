@@ -17,10 +17,9 @@ import Lexer.*;
 
 public class ExprMult {
 
-    public ExprMult(ArrayList<ExprUnary> expr, ArrayList<Symbol> symbol, Type type) {
+    public ExprMult(ArrayList<ExprUnary> expr, ArrayList<Symbol> symbol) {
         this.expr = expr;
         this.symbol = symbol;
-        this.type = type;
     }
 
     public void genC(PW pw) {
@@ -36,7 +35,17 @@ public class ExprMult {
     }
 
     public Type getType() {
-        return type;
+      if(expr == null){
+        return Type.undefinedType;
+      }
+      int tam = this.expr.size();
+      if(tam > 1){ //um ou mais operadores *,/ torna a expr Integer
+        return Type.integerType;
+      }
+      else if(tam == 1){ //Nenhum operador *,/, precisa ver o nivel de baixo
+        return this.expr.get(0).getType();
+      }
+      return Type.undefinedType;
     }
 
     public boolean isId(){
@@ -48,5 +57,4 @@ public class ExprMult {
 
     private ArrayList<ExprUnary> expr = new ArrayList<ExprUnary>();
     private ArrayList<Symbol> symbol = new ArrayList<Symbol>();
-    private Type type;
 }

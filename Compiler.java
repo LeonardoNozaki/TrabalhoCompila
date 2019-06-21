@@ -109,6 +109,12 @@ public class Compiler {
     if (lexer.token == Symbol.LEFTBRACE){
       //Se o token atual é {, entao nao tem parametros nem retorno
       arrayStatList = statList();
+      for (Statement x: arrayStatList){
+        if (x instanceof ReturnStat) {
+          error.signal("function " + id + " must have no return");
+        }
+      }
+
       s = new Function( id, arrayParamList, type, arrayStatList );
       if(flag == 0){ //Se a funcao nao existe, coloque na hash
         symbolTable.putInGlobal( id, s );
@@ -140,9 +146,15 @@ public class Compiler {
       }
     }
 
-    if (lexer.token == Symbol.LEFTBRACE){
+    if (lexer.token == Symbol.LEFTBRACE){ // void
       //Se o token atual é {, entao nao tem retorno
       arrayStatList = statList();
+      for(Statement x: arrayStatList){
+        if(x instanceof ReturnStat){
+          error.signal("function " + id + " must have no return");
+        }
+      }
+
       s =  new Function( id, arrayParamList, type, arrayStatList );
       if(flag == 0){ //Se a funcao nao existe, coloque na hash
         symbolTable.putInGlobal( id, s );
@@ -158,7 +170,22 @@ public class Compiler {
 
     if (lexer.token == Symbol.LEFTBRACE){
       //Se o token atual é {, entao na possui erros
+      boolean hasReturn = false;
       arrayStatList = statList();
+      for(Statement x: arrayStatList){
+        if(x instanceof ReturnStat){
+          hasReturn = true;
+          String typeReturn = ( (ReturnStat) x).getExpr().getTypeStringValue();
+          if(typeReturn != null && type.equals(typeReturn)){
+            error.signal("function " + id + " has different return type");
+          }
+        }
+      }
+
+      if (!hasReturn){
+        error.signal("function " + id + " must have return");
+      }
+
       s = new Function( id, arrayParamList, type, arrayStatList );
       if(flag == 0){ //Se a funcao nao existe, coloque na hash
         symbolTable.putInGlobal( id, s );
@@ -182,6 +209,20 @@ public class Compiler {
     // don't need nextToken(), has in end of type()
 
     arrayStatList = statList();
+    boolean hasReturn = false;
+    for(Statement x: arrayStatList){
+      if(x instanceof ReturnStat){
+        hasReturn = true;
+        String typeReturn = ( (ReturnStat) x).getExpr().getTypeStringValue();
+        if(typeReturn != null && type.equals(typeReturn)){
+            error.signal("function " + id + " has different return type");
+        }
+      }
+    }
+
+    if (!hasReturn){
+      error.signal("function " + id + " must have return");
+    }
 
     s = new Function( id, arrayParamList, type, arrayStatList );
     if(flag == 0){ //Se a funcao nao existe, coloque na hash

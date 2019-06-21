@@ -19,4 +19,3 @@ function main{
 	a = "String" and 10; //Erro, operacao logica de string com int
 	a = false and true and "String" //Erro, operacao logica de string com boolean
 }
-

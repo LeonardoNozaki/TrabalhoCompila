@@ -444,7 +444,17 @@ public class Compiler {
       lexer.nextToken();
     }
 
+    if ( ! checkAssignment( left.getType(), right.getType() ) )
+      error.signal("Type error in assignment");
+
     return new AssignExprStat( left, right );
+  }
+
+  private boolean checkAssignment( Type varType, Type exprType ) {
+    if ( varType == Type.undefinedType || exprType == Type.undefinedType )
+      return true;
+    else
+      return varType == exprType;
   }
 
   private ReturnStat returnStat() {
@@ -488,12 +498,16 @@ public class Compiler {
     }
 
     Expr e = expr();
+    if ( e.getType() != Type.booleanType )
+      error.signal("Boolean type expected in if expression");
+
     slLeft = statList();
 
     if ( lexer.token == Symbol.ELSE ) {
       lexer.nextToken();
       slRight = statList();
     }
+
     return new IfStat( e, slLeft, slRight );
   }
 
@@ -578,10 +592,19 @@ public class Compiler {
       lexer.nextToken();
     }
     Expr e = expr();
+    if ( ! checkWhileExpr(e.getType()) )
+      error.signal("Boolean expression expected");
 
     sl = statList();
 
     return new WhileStat( e, sl );
+  }
+
+  private boolean checkWhileExpr( Type exprType ) {
+    if ( exprType == Type.undefinedType || exprType == Type.booleanType )
+      return true;
+    else
+      return false;
   }
 
 
@@ -589,6 +612,7 @@ public class Compiler {
     /* Expr ::= ExprAnd {”or” ExprAnd} */
     ArrayList<ExprAnd> expr = new ArrayList<ExprAnd>();
     Type type;
+    ExprAnd right = null;
 
     ExprAnd left = exprAnd();
     type = left.getType();
@@ -596,16 +620,27 @@ public class Compiler {
 
     while (lexer.token == Symbol.OR) {
       lexer.nextToken();
-      expr.add(exprAnd());
+      expr.add(right = exprAnd());
+      // analise semantica
+      if ( ! checkBooleanExpr( type, right.getType() ) )
+        error.signal("Expression of boolean type expected");
     }
 
     return new Expr( expr, Symbol.OR, type );
+  }
+
+  private boolean checkBooleanExpr( Type left, Type right ) {
+    if ( left == Type.undefinedType || right == Type.undefinedType )
+      return true;
+    else
+      return left == Type.booleanType && right == Type.booleanType;
   }
 
   private ExprAnd exprAnd() {
     /* ExprAnd ::= ExprRel {”and” ExprRel} */
     ArrayList<ExprRel> expr = new ArrayList<ExprRel>();
     Type type;
+    ExprRel right = null;
 
     ExprRel left = exprRel();
     type = left.getType();
@@ -613,7 +648,10 @@ public class Compiler {
 
     while (lexer.token == Symbol.AND) {
       lexer.nextToken();
-      expr.add(exprRel());
+      expr.add(right = exprRel());
+      // analise semantica
+      if ( ! checkBooleanExpr( type, right.getType() ) )
+        error.signal("Expression of boolean type expected");
     }
 
     return new ExprAnd( expr, Symbol.AND, type );
@@ -633,48 +671,73 @@ public class Compiler {
       op = lexer.token;
       lexer.nextToken();
       right = exprAdd();
+
+      if ( ! checkRelExpr(type, right.getType() ) )
+        error.signal("Type error in expression");
     }
 
     return new ExprRel( left, right, op, type );
+  }
+
+  private boolean checkRelExpr( Type left, Type right ) {
+    if ( left == Type.undefinedType || right == Type.undefinedType )
+      return true;
+    else if ( left == Type.stringType || right == Type.stringType )
+      return false;
+    else
+      return left == right;
   }
 
   private ExprAdd exprAdd() {
     /* ExprAdd ::= ExprMult { (” + ” | ” − ”) ExprMult} */
 
     ArrayList<ExprMult> expr = new ArrayList<ExprMult>();
+    ArrayList<Symbol> op = new ArrayList<Symbol>();
     Type type;
+    ExprMult right = null;
 
     ExprMult left = exprMult();
     type = left.getType();
     expr.add(left);
 
-    Symbol op=null;
-
     while (lexer.token == Symbol.PLUS || lexer.token == Symbol.MINUS){
-      op = lexer.token;
+      op.add(lexer.token);
       lexer.nextToken();
-      expr.add(exprMult());
+      expr.add(right = exprMult());
+      if ( ! checkMathExpr( type, right.getType() ) )
+        error.signal("Expression of type integer expected");
     }
 
     return new ExprAdd( expr, op, type );
+  }
+
+  private boolean checkMathExpr( Type left, Type right ) {
+    boolean orLeft = left == Type.integerType || left == Type.undefinedType;
+    boolean orRight = right == Type.integerType || right == Type.undefinedType;
+
+    if ( left == Type.stringType || right == Type.stringType )
+      return false;
+    return orLeft && orRight;
   }
 
   private ExprMult exprMult() {
     /* ExprMult ::= ExprUnary {(” ∗ ” | ”/”) ExprUnary} */
 
     ArrayList<ExprUnary> expr = new ArrayList<ExprUnary>();
+    ArrayList<Symbol> op = new ArrayList<Symbol>();
     Type type;
+    ExprUnary right = null;
 
     ExprUnary left = exprUnary();
     type = left.getType();
     expr.add(left);
 
-    Symbol op=null;
-
-    while (lexer.token == Symbol.MULT || lexer.token == Symbol.DIV){
-      op = lexer.token;
+    while (lexer.token == Symbol.PLUS || lexer.token == Symbol.MINUS){
+      op.add(lexer.token);
       lexer.nextToken();
-      expr.add(exprUnary());
+      expr.add(right = exprUnary());
+      if ( ! checkMathExpr( type, right.getType() ) )
+        error.signal("Expression of type integer expected");
     }
 
     return new ExprMult( expr, op, type );
@@ -691,6 +754,12 @@ public class Compiler {
 
     ExprPrimary exprPrimary = exprPrimary();
     Type type = exprPrimary.getType();
+
+    // se teve operação então só pode ser int
+    if (op != null){
+      if ( type != Type.integerType )
+        error.signal("Expression of type integer expected");
+    }
 
     return new ExprUnary(exprPrimary, op, type);
   }

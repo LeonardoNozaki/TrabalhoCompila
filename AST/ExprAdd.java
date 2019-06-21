@@ -17,7 +17,7 @@ import Lexer.*;
 
 public class ExprAdd {
 
-    public ExprAdd(ArrayList<ExprMult> expr, Symbol symbol, Type type) {
+    public ExprAdd(ArrayList<ExprMult> expr, ArrayList<Symbol> symbol, Type type) {
       this.expr = expr;
       this.symbol = symbol;
 	    this.type = type;
@@ -29,7 +29,7 @@ public class ExprAdd {
         this.expr.get(i).genC(pw);
         i++;
         while(i < tam){
-            pw.out.print(" " + symbol + " ");
+            pw.out.print(" " + this.symbol.get(i-1).toString() + " ");
             this.expr.get(i).genC(pw);
             i++;
         }
@@ -47,6 +47,6 @@ public class ExprAdd {
     }
 
     private ArrayList<ExprMult> expr = new ArrayList<ExprMult>();
-    private Symbol symbol;
+    private ArrayList<Symbol> symbol = new ArrayList<Symbol>();
     private Type type;
 }

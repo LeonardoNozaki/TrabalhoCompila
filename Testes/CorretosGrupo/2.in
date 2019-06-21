@@ -30,7 +30,7 @@ function multiplicar (multA : Int, multB : Int, tipo : Boolean) -> Int{
 	}
 }
 
-function maiorIgual(valorA : Int, valorb: Int) -> Boolean{
+function maiorIgual(valorA : Int, valorB: Int) -> Boolean{
 	if valorA >= valorB{
 		return true;
 	}
@@ -47,7 +47,7 @@ function mensagem(msg : String) -> String{
 function calc(oper : Boolean){
 	var valor : Int;
 	var x : Int;
-	x = - constante + 100;
+	x = - constante() + 100;
 	valor = 1 + constante();
 	if oper == true or x > 80 and x < 0 and valor != 2 or valor > 50  {
 		valor = valor + 50;
@@ -91,6 +91,8 @@ function comparador(msg : String, tipoComp : Boolean){
   oooooopp
 */
 function loopInfinito {
+	var readInt : Boolean;
+	expr = true;
 	while expr { }
 }
 

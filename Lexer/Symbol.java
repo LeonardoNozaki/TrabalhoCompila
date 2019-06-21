@@ -51,6 +51,8 @@ public enum Symbol {
 	  FALSE("false"),
 	  WRITE("write"),
 	  WRITELN("writeln"),
+    READINT("readInt"),
+    READSTRING("readString"),
 	  FUNCTION("function");
 
 	Symbol(String name) {

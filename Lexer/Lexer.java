@@ -59,6 +59,8 @@ public class Lexer {
     keywordsTable.put( "false", Symbol.FALSE );
     keywordsTable.put( "write", Symbol.WRITE );
     keywordsTable.put( "writeln", Symbol.WRITELN );
+    keywordsTable.put( "readInt", Symbol.READINT );
+    keywordsTable.put( "readString", Symbol.READSTRING );
   }
 
   //Metodo para pegar o proximo token da analise lexica

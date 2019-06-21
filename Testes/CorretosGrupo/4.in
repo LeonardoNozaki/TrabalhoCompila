@@ -1,0 +1,10 @@
+
+//Funcao main
+function main{
+	var a : Int;
+	var b : String;
+	var c : String;
+	b = readString();
+	a = readInt();
+	b = c;
+}

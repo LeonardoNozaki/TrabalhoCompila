@@ -404,6 +404,7 @@ public class Compiler {
 
   private AssignExprStat assignExprStat() {
     /* AssignExprStat ::= Expr [ "=" Expr ] ";" */
+    String id = lexer.getStringValue();
     Expr left = expr();
     Expr right = null;
 
@@ -413,6 +414,28 @@ public class Compiler {
       }
       //Se lado esquerdo for variavel, ja é feito a verificacao de declaração la em baixo
       lexer.nextToken();
+      if(lexer.token == Symbol.READINT){
+        lexer.nextToken();
+        VarDecStat vds = (VarDecStat) symbolTable.getInLocal(id);
+        if(vds != null){
+          if(vds.getType() != Type.integerType){
+            error.signal("ReadInt returns Int Type, var " + id + " must be Int Type");
+          }
+        }
+        read();
+        return new AssignExprStat( left, right, 1);
+      } else if(lexer.token == Symbol.READSTRING){
+        lexer.nextToken();
+        VarDecStat vds = (VarDecStat) symbolTable.getInLocal(id);
+        if(vds != null){
+          if(vds.getType() != Type.stringType){
+            error.signal("ReadString returns String Type, var " + id + " must be String Type");
+          }
+        }
+        read();
+        return new AssignExprStat( left, right, 2);
+      }
+
       right = expr();
       if (lexer.token != Symbol.SEMICOLON){
         if(lexer.token == Symbol.LITERALINT){
@@ -444,10 +467,12 @@ public class Compiler {
       lexer.nextToken();
     }
 
-    if ( ! checkAssignment( left.getType(), right.getType() ) )
-      error.signal("Type error in assignment");
+    if ( ! checkAssignment( left.getType(), right.getType() ) ){
+      //error.signal("Type error in assignment");
+      error.signal("Assignment: Left Type is different to Right Type");
+    }
 
-    return new AssignExprStat( left, right );
+    return new AssignExprStat( left, right, 0);
   }
 
   private boolean checkAssignment( Type varType, Type exprType ) {
@@ -863,6 +888,57 @@ public class Compiler {
     }
 
     return new FuncCall( expr, id);
+  }
+
+  private void read() {
+    /* readInt ::= readInt "(" ")" */
+    /* readString ::= readString "(" ")" */
+
+    // when funcCall is called token already is (
+    if (lexer.token != Symbol.LEFTPAR){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("( expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("( expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("( expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
+
+    if (lexer.token != Symbol.RIGHTPAR){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal(") expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal(") expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal(") expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
+
+    if (lexer.token != Symbol.SEMICOLON){
+      if(lexer.token == Symbol.LITERALINT){
+        error.signal("; expected before " + lexer.getNumberValue());
+      }
+      else if(lexer.token == Symbol.LITERALSTRING || lexer.token == Symbol.IDENT){
+        error.signal("; expected before " + lexer.getStringValue());
+      }
+      else{
+        error.signal("; expected before " + lexer.token);
+      }
+    }
+    else{
+      lexer.nextToken();
+    }
   }
 
   public boolean getC(){

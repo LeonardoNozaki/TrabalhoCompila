@@ -23,7 +23,7 @@ public class Program {
 		int i = 1;
 		int tam = this.funcList.size();
 		pw.out.println("#include <stdio.h>");
-    pw.out.println("#include<stdbool.h>");
+    pw.out.println("#include <stdbool.h>");
 		pw.out.println("");
 		this.funcList.get(0).genC(pw);
 		pw.out.print("\n");

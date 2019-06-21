@@ -14,23 +14,37 @@
 package AST;
 
 public class AssignExprStat extends Statement {
-	public AssignExprStat( Expr left, Expr right ) {
+	public AssignExprStat( Expr left, Expr right, int read ) {
 		this.left = left;
 		this.right = right;
+    this.read = read;
 	}
 
-	public void genC( PW pw ) {  // NÃO SEI SE ISSO TÁ CERTO
-		pw.print("");
-		this.left.genC(pw);
-		if ( right != null ) {
-			pw.out.print(" = ");
-			this.right.genC(pw);
-			pw.out.println(";");
-		}
-		else{
-			pw.out.println(";");
-		}
+	public void genC( PW pw ) {
+    if(this.read == 1){ //ReadInt
+      pw.print("scanf(\"%d\", &");
+      this.left.genC(pw);
+      pw.out.println(");");
+    }
+    else if(this.read == 2){ //ReadString
+      pw.print("scanf(\"%s\", &");
+      this.left.genC(pw);
+      pw.out.println(");");
+    }
+    else{
+  		pw.print("");
+  		this.left.genC(pw);
+  		if ( right != null ) {
+  			pw.out.print(" = ");
+  			this.right.genC(pw);
+  			pw.out.println(";");
+  		}
+  		else{
+  			pw.out.println(";");
+  		}
+    }
 	}
 
 	private Expr left, right;
+  private int read;
 }

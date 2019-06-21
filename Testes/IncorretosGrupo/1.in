@@ -1,6 +1,4 @@
-/*
-	Arquivo de teste com alguns erros.
-*/
+
 //Erro, sem : entre id e tipo nos parametros
 function fatorial(n Int) -> Int{
 	//Erro, sem { depois do if e antes StatList

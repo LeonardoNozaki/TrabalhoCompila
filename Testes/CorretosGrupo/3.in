@@ -1,0 +1,26 @@
+
+function main {
+	var flag : Int;
+	var senha : String;
+
+	while flag == 0 {
+		count = -1;
+		flag = 0;
+
+		while senha != "\n" {
+			scanf(ler);
+			if ler >= "a"{
+				flag = 1;
+			}
+			count= count + 1;
+		}
+		if flag {
+			writeln(senha);
+		}
+		else{
+			write(count);
+		}
+	}
+
+}
+ 

@@ -1,3 +1,4 @@
+
 //Erro, function escrito errado
 //Erro, sem virgula entre os parametros
 functon multiplicar (mult1 : Int mult2 : Int tipo : Boolean) -> Int{

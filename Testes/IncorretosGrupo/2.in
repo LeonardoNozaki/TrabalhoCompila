@@ -1,3 +1,4 @@
+
 //Erro no tipo de retorno da funcao
 function constante -> int{
 	var valor1 : Int;

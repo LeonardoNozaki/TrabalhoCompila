@@ -1,0 +1,30 @@
+function imprima(before: Int, valor: Int, after: String) {
+	var i : Int;
+	i = 0;
+	while i < before {
+		write("*");
+		i = i + 1;
+	}
+	writeln("");
+	writeln(valor);
+	writeln(after);
+}
+
+function calculo(){
+	var a : Int;
+	var b : Int;
+	2 = 10 + 5; //Erro, valor 2 nao pode receber uma atribuicao
+	a + b = 5; //Erro, duas variaveis nao podem receber uma atribuicao
+	"String" = "String"; //Erro, uma string literal nao pode receber uma atribuicao
+}
+
+function main{
+	//Erro variavel nao declarada
+	a = 1;
+
+	//Erro, chamada de funcao com diferente numeros de parametros
+	imprima(1);
+	
+	//Erro, chamada de funcao com diferentes tipos de parametros
+	imprima("String", true, 10);
+}

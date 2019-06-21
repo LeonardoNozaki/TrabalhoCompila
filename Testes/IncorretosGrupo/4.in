@@ -1,3 +1,4 @@
+
 //Erro de tipo, String escrito errado
 function mensagem(msg : Streng) -> strang{
 	//Erro, falta fechar parenteses

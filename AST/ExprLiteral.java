@@ -20,4 +20,6 @@ public class ExprLiteral extends ExprPrimary {
     public void genC(PW pw) {}
     @Override
     public Type getType() { return null; }
+	@Override
+	public boolean isId() {return false; }
 }

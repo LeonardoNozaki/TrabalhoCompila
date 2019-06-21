@@ -14,17 +14,24 @@
 package AST;
 
 public class VarDecStat extends Statement {
-  public VarDecStat( String name, Type type ) {
+  public VarDecStat( String name, Type type, boolean parameter ) {
     this.name = name;
     this.type = type;
+    this.parameter = parameter;
   }
 
   public void genC( PW pw ) {
-    pw.println(this.type.getCname() + " " + this.name + ";");
+    if(parameter){
+      pw.print(this.type.getCname() + " " + this.name);
+    }
+    else{
+      pw.println(this.type.getCname() + " " + this.name + ";");
+    }
   }
 
   public VarDecStat( String name ) {
     this.name = name;
+    this.parameter = false;
   }
 
   public void setType( Type type ) {
@@ -41,4 +48,5 @@ public class VarDecStat extends Statement {
 
   private String name;
   private Type type;
+  private boolean parameter;
 }

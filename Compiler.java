@@ -246,7 +246,7 @@ public class Compiler {
     // get the type of the variable
     Type typeVar = type();  // end of type has nextToken()
 
-    VarDecStat v = new VarDecStat(id, typeVar);
+    VarDecStat v = new VarDecStat(id, typeVar, true);
 
     paramList.add(v);  // inserts in the parameter list the variable object
 
@@ -518,7 +518,7 @@ public class Compiler {
       lexer.nextToken();
     }
 
-    VarDecStat v = new VarDecStat( id, typeVar );
+    VarDecStat v = new VarDecStat( id, typeVar, false );
 
     symbolTable.putInLocal(id, v);
 

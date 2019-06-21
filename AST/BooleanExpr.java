@@ -20,7 +20,7 @@ public class BooleanExpr extends ExprLiteral {
 	}
 
 	public void genC( PW pw ) {
-		pw.out.print( value ? "1" : "0" );
+		pw.out.print( value ? "true" : "false" );
 	}
 
 	public Type getType() {

@@ -1,0 +1,12 @@
+function main {
+
+	var a : Int;
+	var b : Boolean;
+
+	a = 5;
+	b = true;
+
+	while a < b {
+		a = 7;
+	}
+}

@@ -39,6 +39,10 @@ public class Expr {
         return type;
     }
 
+    public String getTypeStringValue() {
+      return type.toString();
+    }
+
     public boolean isId(){
       if(this.expr.size() == 1){
         return this.expr.get(0).isId();

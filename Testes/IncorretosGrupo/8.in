@@ -1,16 +1,21 @@
-function main {
-	var i : Int;
-	var i : Int;
-}
-function imprimir(before: Int, valor: Int, after: String) {
-	var i : Int;
-	var i : Int;
-	i = 0;
-	while i < before {
-		write("*");
-		i = i + 1;
+function retornos (a : Int, b : Int) -> Int {
+	if a > 0{
+		return "String"; //Tipo de retorno errado
 	}
-	writeln("");
-	writeln(valor);
-	writeln(after);
+	else if b == 0{
+		return true; //Tipo de retorno errado
+		return false; //Tipo de retorno errado
+	}
+	else{
+		return c; //Retorno errado, variavel nao existe
+	}
+	return a;	
+	return -10;
+}
+
+function main{
+	var Int : a;
+	a = true + 10; //Erro, soma de boolean com int
+	a = "String" and 10; //Erro, operacao logica de string com int
+	a = false and true and "String" //Erro, operacao logica de string com boolean
 }

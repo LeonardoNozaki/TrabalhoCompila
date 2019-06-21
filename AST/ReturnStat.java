@@ -19,6 +19,10 @@ public class ReturnStat extends Statement {
 		this.e = e;
 	}
 
+  public Expr getExpr(){
+    return this.e;
+  }
+
 	public void genC( PW pw ) {
 		pw.print("return ");
 		this.e.genC(pw);

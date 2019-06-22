@@ -96,13 +96,13 @@ public class Compiler {
       id = (String) lexer.getStringValue();
       s = (Function) symbolTable.getInGlobal(id);
       if(s != null){
-        error.signal("Function " + id + " has already been declared");
+        error.signal("Function '" + id + "' has already been declared");
         flag = 1; //Flag de controle, valor 1 indica que funcao ja existe com esse id
       }
       lexer.nextToken();
       //Analise sematica, main nao deve ter parametros nem retorno
       if ( id.compareTo("main") == 0 && lexer.token != Symbol.LEFTBRACE){
-        error.signal("function main must be a parameterless and returnless function");
+        error.signal("Function 'main' must be a parameterless and returnless function");
       }
     }
 
@@ -111,7 +111,7 @@ public class Compiler {
       arrayStatList = statList();
       for (Statement x: arrayStatList){
         if (x instanceof ReturnStat) {
-          error.signal("function " + id + " must have no return");
+          error.signal("Function '" + id + "' must have no return");
         }
       }
 
@@ -151,7 +151,7 @@ public class Compiler {
       arrayStatList = statList();
       for(Statement x: arrayStatList){
         if(x instanceof ReturnStat){
-          error.signal("function " + id + " must have no return");
+          error.signal("function '" + id + "' must have no return");
         }
       }
 
@@ -357,6 +357,8 @@ public class Compiler {
     }
     symbolTable.sub(); //Remove um nivel na pilha de hash das variaveis locais
 
+    
+
     if (lexer.token != Symbol.RIGHTBRACE){
       if(lexer.token == Symbol.LITERALINT){
         error.signal("} expected before " + lexer.getNumberValue());
@@ -379,7 +381,7 @@ public class Compiler {
     /* Stat ::= AssignExprStat | ReturnStat | VarDecStat | IfStat | WhileStat */
 
     switch (lexer.token) {
-      case IDENT:      // all are terminals of the assign
+      case IDENT:   // all are terminals of the assign
       case LITERALINT:
       case TRUE:
       case FALSE:
@@ -407,7 +409,7 @@ public class Compiler {
     String id = lexer.getStringValue();
     Expr left = expr();
     Expr right = null;
-
+    
     if (lexer.token == Symbol.ASSIGN) {
       if(left.isId() == false){ //Lado esquerdo nao é variavel
         error.signal("Id expected before " + lexer.token);
@@ -467,10 +469,10 @@ public class Compiler {
     else{
       lexer.nextToken();
     }
-
+    
     if ( ! checkAssignment( left.getType(), right.getType() ) ){
       //error.signal("Type error in assignment");
-      error.signal("Assignment: Void Type or Left Type is different to Right Type");
+      error.signal("Assignment: Void Type or left side Type is different to right side Type");
     }
 
     return new AssignExprStat( left, right, 0);
@@ -652,7 +654,7 @@ public class Compiler {
       expr.add(right);
       // analise semantica
       if ( ! checkBooleanExpr( type, right.getType() ) ){
-        error.signal("Expression of boolean type expected before " + lexer.token);
+        error.signal("Operation 'or' expects Boolean Type arguments, before " + lexer.token);
       }
     }
 
@@ -682,7 +684,7 @@ public class Compiler {
       expr.add(right);
       // analise semantica
       if ( ! checkBooleanExpr( type, right.getType() ) ){
-        error.signal("Expression of boolean type expected before " + lexer.token);
+        error.signal("Operation 'and' expects Boolean Type arguments, before " + lexer.token);
       }
     }
 
@@ -704,7 +706,7 @@ public class Compiler {
       lexer.nextToken();
       right = exprAdd();
       if ( ! checkRelExpr(type, right.getType() ) ){
-        error.signal("Comparation of differents types or string types before " + lexer.token);
+        error.signal("Comparation of differents types or String Type involved, before " + lexer.token);
       }
     }
 
@@ -740,7 +742,7 @@ public class Compiler {
       right = exprMult();
       expr.add(right);
       if ( ! checkMathExpr( type, right.getType() ) ){
-        error.signal("Expression of type integer expected before " + lexer.token);
+        error.signal("Operation '+' or '-' expects Interger Type arguments, before " + lexer.token);
       }
     }
 
@@ -776,7 +778,7 @@ public class Compiler {
       right = exprUnary();
       expr.add(right);
       if ( ! checkMathExpr( type, right.getType() ) ){
-        error.signal("Expression of type integer expected before " + lexer.token);
+        error.signal("Operation '*' or '/' expects Interger Type arguments, before " + lexer.token);
       }
     }
 
@@ -798,7 +800,7 @@ public class Compiler {
     // se teve operação então só pode ser int
     if (op != null){
       if ( type != Type.integerType ){
-        error.signal("Type integer expected before " + lexer.token);
+        error.signal("Integer Type expected before " + lexer.token);
       }
     }
 
@@ -858,6 +860,8 @@ public class Compiler {
   private FuncCall funcCall(String id) {
     /* FuncCall ::= Id "(" [ Expr {”, ”Expr} ] ")" */
     ArrayList<Expr> expr = new ArrayList<Expr>();
+    ArrayList<Type> types = new ArrayList<Type>();
+    Expr aux_expr;
 
     // when funcCall is called token already is (
     if (lexer.token != Symbol.LEFTPAR){
@@ -877,13 +881,17 @@ public class Compiler {
 
     if (lexer.token == Symbol.IDENT || lexer.token == Symbol.LITERALINT || lexer.token == Symbol.FALSE ||
         lexer.token == Symbol.TRUE || lexer.token == Symbol.LITERALSTRING) {
-      expr.add(expr());
+      aux_expr = expr();
+      types.add(aux_expr.getType());
+      expr.add(aux_expr);
       while (lexer.token == Symbol.COMMA){
         lexer.nextToken();
-        expr.add(expr());
+        aux_expr = expr();
+        types.add(aux_expr.getType());
+        expr.add(aux_expr);
       }
     }
-
+    
     if (lexer.token != Symbol.RIGHTPAR){
       if(lexer.token == Symbol.LITERALINT){
         error.signal(") expected before " + lexer.getNumberValue());
@@ -898,17 +906,27 @@ public class Compiler {
     else{
       lexer.nextToken();
     }
-
+    
     if (id.equals(Symbol.WRITE.toString()) || id.equals(Symbol.WRITELN.toString())){
       return new Write( expr, id );
     }
+    
     Function f = (Function) symbolTable.getInGlobal(id);
     if(f != null){ //Funcao ja declarada
+      if(f.getSize() != types.size()){
+        error.signal("Number of parameters in '" + id + "' is incorrect");
+      }
+      for(int i = 0; i < types.size() && i < f.getSize(); i++){
+        if(f.getTypeParameter(i) != types.get(i)){
+          error.signal("Parameter " + (i+1) + " of '" + id + "' not matching function declaration");
+        }
+      }
       return new FuncCall( expr, id, f.getType());
     }
     else{
-      error.signal("Function " + id + " was not declared");
+      error.signal("Function '" + id + "' was not declared");
     }
+    
     return new FuncCall( expr, id, Type.undefinedType);
   }
 

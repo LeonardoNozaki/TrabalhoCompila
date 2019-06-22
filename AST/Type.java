@@ -22,8 +22,8 @@ abstract public class Type {
 	public static Type booleanType = new BooleanType();
 	public static Type integerType = new IntegerType();
 	public static Type stringType = new StringType();
-  public static Type undefinedType = new UndefinedType();
-  public static Type voidType = new VoidType();
+    public static Type undefinedType = new UndefinedType();
+    public static Type voidType = new VoidType();
 
 	public String getName() {
 		return name;

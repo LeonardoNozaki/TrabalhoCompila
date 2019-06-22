@@ -30,6 +30,14 @@ public class Function {
     return this.type;
   }
 
+  public int getSize(){
+    return this.paramList.size();
+  }
+
+  public Type getTypeParameter(int i){
+    return paramList.get(i).getType();
+  }
+
   public void genC(PW pw) {
       int i = 0;
       int tam;

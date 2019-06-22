@@ -28,7 +28,6 @@ public class Write extends FuncCall {
   @Override
   public void genC(PW pw) {
 	  int size = this.expr.size();
-
 	  if (size > 0) {
 		  if ( id.equals(Symbol.WRITE.toString()) ) {
 		    pw.out.print("printf(\"");

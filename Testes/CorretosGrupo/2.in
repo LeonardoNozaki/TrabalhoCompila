@@ -1,10 +1,10 @@
 function constante -> Int{
 	var valorA : Int;
 	var valorB : Int;
-	//valorA = 1 * + 2 + +5 * - 4;
-	//valorB = 10 / 2 - 20 /  - 5;
+	valorA = 1 * + 2 + +5 * - 4;
+	valorB = 10 / 2 - 20 /  - 5;
 	valorA = 1 + 2;
-	if valorA or valorB != 10 {
+	if valorA > 0 or valorB != 10 {
 		return valorA;
 	}
 	return valorB;

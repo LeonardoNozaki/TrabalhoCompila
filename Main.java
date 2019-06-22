@@ -149,7 +149,8 @@ public class Main {
         }
       }
       else{
-        System.out.println("Errors found in " + args[0] +", check " + args[1] + " to see them");
+        System.out.println("");
+        System.out.println(compiler.getNumErrors() + " errors found in " + args[0]);
       }
     }
   }

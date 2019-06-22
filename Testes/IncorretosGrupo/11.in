@@ -1,0 +1,22 @@
+function soma(x : Int, y : Int) -> String{
+	return x + y;
+}
+
+function main{
+	var a : Int;
+	var b : Boolean;
+
+	a = 5;
+	b = true;
+
+	if a < -4 and b{
+	}
+
+	var c : Boolean;
+	c = a == 5 or b and a < 4 or b != false;
+	
+	var d : Int;
+	
+	d = soma(a,12);
+
+}

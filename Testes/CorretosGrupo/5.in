@@ -1,0 +1,9 @@
+function main{
+	var a : Int;
+	var b : Int;
+	a = 5;
+	b = 7;
+	if a != b and a < b{
+		a = 7;
+	}
+}

@@ -1,0 +1,47 @@
+function constante -> Int{
+	var valorA : Int;
+	var valorB : Int;
+	valorA = 1 * + 2 + +5 * - 4;
+	valorB = 10 / 2 - 20 /  - 5;
+	valorA = 1 + 2;
+	if valorA > 0 or valorB != 10 {
+		return valorA;
+	}
+	return valorB;
+}
+
+//Funcao de multiplicar dois valores utilizandos dois meios diferentes
+function multiplicar (multA : Int, multB : Int, tipo : Boolean) -> Int{
+	if tipo == true{
+		var i : Int;
+		i = 1;
+		var total : Int;
+		total = 0;
+		while i <= multB{
+			total = total + multA;		
+			i = i + 1;
+		} 
+		return total;
+	}
+	if tipo == false{
+		var total : Int;
+		total = multA * multB;
+		return total;
+	}
+}
+
+
+function maiorIgual(valorA : Int, valorB: Int) -> Boolean{
+	if valorA >= valorB{
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+
+function main{
+	var resultado : Int;
+
+}

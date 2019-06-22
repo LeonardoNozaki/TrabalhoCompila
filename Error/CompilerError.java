@@ -19,10 +19,9 @@ import java.io.*;
 public class CompilerError {
 
   public CompilerError( PrintWriter out, String nomeArq) {
-    // output of an error is done in out
-    this.out = out;
     this.nomeArq = nomeArq;
-    flagC = true;
+    this.flagC = true;
+    this.contador = 0;
   }
 
   public void setLexer( Lexer lexer ) {
@@ -30,8 +29,9 @@ public class CompilerError {
   }
 
   public void signal( String strMessage ) {
+    contador++;
     if(flagC == false){
-      out.println();
+      System.out.println();
     }
 /*
     \n<nome do arquivo>:<numero da linha de erro>:<mensagem de erro>\n<linha do codigo com erro>
@@ -42,12 +42,9 @@ ponto onde o token estava no momento que o erro ocorreu.
     O compilador pode continuar lancando excecao java.lang.RuntimeException, mas a mensagem de erro deve
 estar no formato citado.*/
 
-    out.println(nomeArq + ": " + lexer.getLineNumber() + ": " + strMessage);
-    out.println(lexer.getCurrentLine());
+    System.out.println(nomeArq + ": " + lexer.getLineNumber() + ": " + strMessage);
+    System.out.println(lexer.getCurrentLine());
 
-    if ( out.checkError() ) {
-      System.out.println("Error in signaling an error");
-    }
     flagC = false;
   }
 
@@ -55,8 +52,12 @@ estar no formato citado.*/
     return flagC;
   }
 
+  public int getNumError(){
+    return contador;
+  }
+
   private boolean flagC;
   private Lexer lexer;
   private String nomeArq;
-  PrintWriter out;
+  private int contador;
 }

@@ -19,7 +19,8 @@ function imprimir(before: Int, valor: Int, after: String) {
 	writeln(after);
 }
 
+
 //Funcao main
 function main{
-	imprima(50, fatorial(5)*2*fatorial(3), " 	fim");
+	imprimir(50, fatorial(5)*2*fatorial(3), " 	fim");
 }

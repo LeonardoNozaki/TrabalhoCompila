@@ -36,6 +36,13 @@ public class Lexer {
     this.error = error;
   }
 
+  public boolean getKeyWords(Object key){
+    Object obj = keywordsTable.get(key);
+    if(obj == null){
+      return false;
+    }
+    return true;
+  }
   //Hash para colocar as palavras reservadas
   static private Hashtable<String, Symbol> keywordsTable;
 

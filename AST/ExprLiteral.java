@@ -3,7 +3,7 @@
  * Disciplina: Compiladores
  * Prof. Leticia Berto
  *
- * Trabalho - Análise Léxica e Sintática (Fase 1)
+ * Trabalho - Análise Semântica (Fase 2)
  *
  * Aluno: Bruno Rizzi       RA: 743515
  * Aluna: Giulia Fazzi      RA: 743542

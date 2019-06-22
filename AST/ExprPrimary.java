@@ -19,4 +19,5 @@ abstract public class ExprPrimary {
     abstract public void genC( PW pw );
     abstract public Type getType();
     abstract public boolean isId();
+    abstract public boolean isFuncCall();
 }

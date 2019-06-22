@@ -1,0 +1,16 @@
+function soma ( a : Int, a : Int) -> Int{
+
+}
+
+
+function main{
+	a = 10;
+	var a : Int;
+	var a : String;
+	var soma : Boolean;
+	soma();
+	a = readInt();
+	a = readString();
+	soma();
+	a = soma();
+}

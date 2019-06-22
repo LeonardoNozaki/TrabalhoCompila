@@ -1,0 +1,12 @@
+function algo(a : Int, b : String){
+	
+}
+
+
+function main{
+	algo();
+	algo(10);
+	algo("String", "A");
+	algo(10, true);
+	algo(true, "a");
+}

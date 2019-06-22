@@ -1,6 +1,6 @@
 function logicoOr -> Boolean{
   var op : Boolean;
-  var opd : Boolean;
+  var opD : Boolean;
 
   op = true;
   opD = true;
@@ -11,8 +11,10 @@ function logicoOr -> Boolean{
   else{
     write("F");
   }
+return op or opD;
 }
 
 function main{
-  logicoOr();
+	var a : Boolean;
+  a = logicoOr();
 }

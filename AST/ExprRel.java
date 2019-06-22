@@ -49,6 +49,13 @@ public class ExprRel {
       return false;
     }
 
+    public boolean isFuncCall(){
+      if(this.right == null){
+        return this.left.isFuncCall();
+      }
+      return false;
+    }
+
     private ExprAdd left, right;
     private Symbol symbol;
 }

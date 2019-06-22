@@ -2,13 +2,13 @@ function retornos (a : Int, b : Int) -> Int {
 	if a > 0{
 		return "String"; //Tipo de retorno errado
 	}
-	else if b == 0{
+	else {
 		return true; //Tipo de retorno errado
 		return false; //Tipo de retorno errado
 	}
-	else{
-		return c; //Retorno errado, variavel nao existe
-	}
+	
+	return c; //Retorno errado, variavel nao existe
+
 	return a;	
 	return -10;
 }

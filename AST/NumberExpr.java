@@ -34,5 +34,9 @@ public class NumberExpr extends ExprLiteral {
     return false;
   }
 
+  public boolean isFuncCall(){
+    return false;
+  }
+
 	private Integer value;
 }

@@ -3,18 +3,21 @@ function main {
 	var flag : Int;
 	var senha : String;
 	var count : Int;
+	
 	while flag == 0 {
 		count = -1;
 		flag = 0;
-
-		while senha != "\n" {
-			scanf(ler);
-			if ler >= "a"{
+		var ler : String;
+		while flag != 1 {
+			var num : Int;
+			ler = readString();
+			num = readInt();
+			if num >= 10 {
 				flag = 1;
 			}
 			count= count + 1;
 		}
-		if flag {
+		if flag == 1 {
 			writeln(senha);
 		}
 		else{

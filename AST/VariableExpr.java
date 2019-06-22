@@ -34,5 +34,9 @@ public class VariableExpr extends ExprPrimary {
     return true;
   }
 
+  public boolean isFuncCall(){
+    return false;
+  }
+
   private VarDecStat v;
 }

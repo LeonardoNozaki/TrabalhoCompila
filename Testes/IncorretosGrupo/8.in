@@ -2,7 +2,7 @@ function retornos (a : Int, b : Int) -> Int {
 	if a > 0{
 		return "String"; //Tipo de retorno errado
 	}
-	else if b == 0{
+	if b == 0{
 		return true; //Tipo de retorno errado
 		return false; //Tipo de retorno errado
 	}

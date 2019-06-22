@@ -19,11 +19,8 @@ function imprimir(before: Int, valor: Int, after: String) {
 	writeln(after);
 }
 
-function if (while : Int){
-	var Int : String;
-}
 
 //Funcao main
 function main{
-	imprimir();
+	imprimir(10,10,"s");
 }

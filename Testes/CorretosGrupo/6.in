@@ -1,4 +1,4 @@
-function soma(x : Int, y : Int){
+function soma(x : Int, y : Int) -> Int {
 	return x + y;
 }
 

@@ -1,0 +1,11 @@
+function main(a : Int){
+
+}
+
+function main -> Int{
+
+}
+
+function main(b : String, c : Boolean) -> Int{
+
+}

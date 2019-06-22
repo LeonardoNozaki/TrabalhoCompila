@@ -83,8 +83,8 @@ function comparador(msg : String, tipoComp : Boolean){
 	if tipoComp{
 		com = "Proibido";
 	}
-	if msg == com{
-		write("Acertou");
+	else{
+		com = msg;
 	}
 }
 
@@ -92,16 +92,17 @@ function comparador(msg : String, tipoComp : Boolean){
   oooooopp
 */
 function loopInfinito {
-	var readInt : Boolean;
+	var expr : Boolean;
 	expr = true;
 	while expr { }
 }
 
 function main{
 	var resultado : Int;
+	var letra : String;
 	resultado = multiplicar(constante(), 10, true);
 	calc(maiorIgual(resultado, 10));
-	mensagem("ola");
+	letra = mensagem("ola");
 	mensagens("Cuidado", "Pode ir");
 	comparador("Permitido", portaAnd(true, true));
 	loopInfinito();

@@ -1,0 +1,18 @@
+function cond{
+	if 10 + 20{
+
+	}
+}
+
+function main{
+	while 10*1 +2{
+	}
+	var a : Int;
+	var b : Boolean;
+	var c : String;
+	a = "String";
+	b = 10 + 20;
+	c = true or false;
+	c = true + false or "String" + "a";
+	c = "String" + "A";
+}

@@ -3,16 +3,18 @@ function logicoE -> Boolean{
   var opd : Boolean;
 
   op = true;
-  opD = false;
+  opd = false;
 
-  if op and opD {
+  if op and opd {
     write ("V");
   }
   else{
     write("F");
   }
+return op and opd;
 }
 
 function main{
-  logicoE();
+	var v : Boolean;
+  v = logicoE();
 }

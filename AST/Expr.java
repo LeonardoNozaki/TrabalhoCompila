@@ -58,5 +58,12 @@ public class Expr {
       return false;
     }
 
+    public boolean isFuncCall(){
+      if(this.expr.size() == 1){
+        return this.expr.get(0).isFuncCall();
+      }
+      return false;
+    }
+
     private ArrayList<ExprAnd> expr = new ArrayList<ExprAnd>();
 }

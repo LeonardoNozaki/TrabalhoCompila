@@ -57,12 +57,14 @@ public class Compiler {
   private Function func() {
     /* Func ::= "function" Id [ "(" ParamList ")" ] ["->" Type ] StatList */
     returnTypeFunction = Type.voidType;
+    flagReturn = 0;
     ArrayList<VarDecStat> arrayParamList = null;
     Type type = null;
     ArrayList<Statement> arrayStatList = null;
     String id = "";
     Function s = null;
     int flag = 0;
+    int flag1 = 0;
 
     if (lexer.token != Symbol.FUNCTION) {
       if(lexer.token == Symbol.LITERALINT){
@@ -107,6 +109,7 @@ public class Compiler {
       //Analise sematica, main nao deve ter parametros nem retorno
       if ( id.compareTo("main") == 0 && lexer.token != Symbol.LEFTBRACE){
         error.signal("Function 'main' must be a parameterless and returnless function");
+        flag = 1;//Nao adicionar essa funcao na hash
       }
     }
 
@@ -114,14 +117,11 @@ public class Compiler {
       //Se o token atual é {, entao nao tem parametros nem retorno
       //Adiciona o cabeçalho da funcao antes, para permitir chamada recursiva
       s = new Function( id, arrayParamList, type, null );
-      symbolTable.putInGlobal( id, s );
+      if(flag == 0){
+        symbolTable.putInGlobal( id, s );
+      }
 
       arrayStatList = statList();
-      /*for (Statement x: arrayStatList){
-        if (x instanceof ReturnStat) {
-          error.signal("Function '" + id + "' must have no return");
-        }
-      }*/
 
       s = new Function( id, arrayParamList, type, arrayStatList );
       symbolTable.removeLocalIdent();
@@ -155,14 +155,11 @@ public class Compiler {
       //Se o token atual é {, entao nao tem retorno
       //Adiciona o cabeçalho da funcao antes, para permitir chamada recursiva
       s = new Function( id, arrayParamList, type, null );
-      symbolTable.putInGlobal( id, s );
+      if(flag == 0){
+        symbolTable.putInGlobal( id, s );
+      }
 
       arrayStatList = statList();
-      /*for(Statement x: arrayStatList){
-        if(x instanceof ReturnStat){
-          error.signal("function '" + id + "' must have no return");
-        }
-      }*/
 
       s =  new Function( id, arrayParamList, type, arrayStatList );
       symbolTable.removeLocalIdent();
@@ -173,32 +170,25 @@ public class Compiler {
       lexer.nextToken();
       type = type();
       returnTypeFunction = type;
+      flag1 = 1;
     }
 
     if (lexer.token == Symbol.LEFTBRACE){
       //Se o token atual é {, entao nao possui erros
       //Adiciona o cabeçalho da funcao antes, para permitir chamada recursiva
       s = new Function( id, arrayParamList, type, null );
-      symbolTable.putInGlobal( id, s );
+      if(flag == 0){
+        symbolTable.putInGlobal( id, s );
+      }
 
       boolean hasReturn = false;
       arrayStatList = statList();
-      /*for(Statement x: arrayStatList){
-        if(x instanceof ReturnStat){
-          hasReturn = true;
-          String typeReturn = ( (ReturnStat) x).getExpr().getTypeStringValue();
-          if(typeReturn != null && type.equals(typeReturn)){
-            error.signal("function " + id + " has different return type");
-          }
-        }
-      }
-
-      if (!hasReturn){
-        error.signal("function " + id + " must have return");
-      }*/
 
       s = new Function( id, arrayParamList, type, arrayStatList );
       symbolTable.removeLocalIdent();
+      if(flag1 == 1 && flagReturn == 0){
+        error.signal("Function " + id + " must have any return");
+      }
       return s;
     }
     else{
@@ -218,23 +208,12 @@ public class Compiler {
 
     //Adiciona o cabeçalho da funcao antes, para permitir chamada recursiva
     s = new Function( id, arrayParamList, type, null );
-    symbolTable.putInGlobal( id, s );
+    if(flag == 0){
+        symbolTable.putInGlobal( id, s );
+      }
 
     arrayStatList = statList();
-    /*boolean hasReturn = false;
-    for(Statement x: arrayStatList){
-      if(x instanceof ReturnStat){
-        hasReturn = true;
-        String typeReturn = ( (ReturnStat) x).getExpr().getTypeStringValue();
-        if(typeReturn != null && type.equals(typeReturn)){
-            error.signal("function " + id + " has different return type");
-        }
-      }
-    }
 
-    if (!hasReturn){
-      error.signal("function " + id + " must have return");
-    }*/
 
     s = new Function( id, arrayParamList, type, arrayStatList );
     symbolTable.removeLocalIdent();
@@ -308,8 +287,8 @@ public class Compiler {
     //Verifica se a variavel tem id e tipo valido
     if(flag == 0 && typeVar != null){
       //Verifica se a variavel ja foi declarada ou nao
-      if(symbolTable.getInLocal(id) != null){
-        error.signal("var " + id + " has already been declared");
+      if(symbolTable.get(id) != null){ //
+        error.signal(id + " has already been declared as Variable or Function");
       }
       else{
         symbolTable.putInLocal(id, v);
@@ -392,7 +371,6 @@ public class Compiler {
 
   private Statement stat() {
     /* Stat ::= AssignExprStat | ReturnStat | VarDecStat | IfStat | WhileStat */
-
     switch (lexer.token) {
       case IDENT:   // all are terminals of the assign
       case LITERALINT:
@@ -430,6 +408,7 @@ public class Compiler {
         error.signal("Id expected before " + lexer.token);
         flag = 0; //Atribuicao invalida, pq nao é um id antes da atribuicao
       }
+
       //Se lado esquerdo for variavel, ja é feito a verificacao de declaração la em baixo
       lexer.nextToken();
       if(lexer.token == Symbol.READINT){
@@ -477,6 +456,11 @@ public class Compiler {
       }
 
     } else if(lexer.token != Symbol.SEMICOLON){
+      if(left.isFuncCall() == true){
+        if(left.getType() != Type.voidType){
+          error.signal("Function call must be assignment to a variable");
+        }
+      }
       if(lexer.token == Symbol.LITERALINT){
         error.signal("; or = expected before " + lexer.getNumberValue());
       }
@@ -488,6 +472,11 @@ public class Compiler {
       }
     }
     else{
+      if(left.isFuncCall() == true){
+        if(left.getType() != Type.voidType){
+          error.signal("Function call must be assignment to a variable");
+        }
+      }
       lexer.nextToken();
     }
 
@@ -518,6 +507,7 @@ public class Compiler {
       error.signal("'return' expected before " + lexer.token);
     }
     else{
+      flagReturn = 1;
       lexer.nextToken();
     }
 
@@ -560,7 +550,7 @@ public class Compiler {
     Expr e = expr();
     //If e while precisam de expr boolean, entao pode usar a msm verificacao
     if ( ! checkWhileExpr(e.getType()) ){
-      error.signal("Boolean expression expected");
+      error.signal("Boolean expression expected in if");
     }
 
     slLeft = statList();
@@ -603,8 +593,10 @@ public class Compiler {
     }
     // name of the identifier
     String id = lexer.getStringValue();
-    if(symbolTable.getInLocal(id) != null){
-      error.signal("var " + id + " has already been declared");
+    int flag = 0;
+    if(symbolTable.get(id) != null){ //
+      error.signal(id + " has already been declared as Variable or Function");
+      flag = 1;
     }
 
     if (lexer.token != Symbol.COLON){
@@ -640,8 +632,9 @@ public class Compiler {
     }
 
     VarDecStat v = new VarDecStat( id, typeVar, false );
-
-    symbolTable.putInLocal(id, v);
+    if(flag == 0){
+      symbolTable.putInLocal(id, v);
+    }
 
     return v;
   }
@@ -659,7 +652,7 @@ public class Compiler {
     }
     Expr e = expr();
     if ( ! checkWhileExpr(e.getType()) ){
-      error.signal("Boolean expression expected");
+      error.signal("Boolean expression expected in while");
     }
 
     sl = statList();
@@ -888,7 +881,7 @@ public class Compiler {
         lexer.nextToken();
         return new StringExpr(s);
       default :
-        error.signal("ExprLiteral expected");
+        error.signal("ExprLiteral expected before "+ lexer.token);
         return null;
     }
   }
@@ -1031,5 +1024,6 @@ public class Compiler {
   private CompilerError error;
   private Type returnTypeFunction;
   private String returnIdFunction;
+  private int flagReturn;
 }
 

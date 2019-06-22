@@ -22,4 +22,6 @@ public class ExprLiteral extends ExprPrimary {
   public Type getType() { return null; }
 	@Override
 	public boolean isId() {return false; }
+  @Override
+  public boolean isFuncCall(){return false;}
 }

@@ -48,6 +48,10 @@ public class FuncCall extends ExprPrimary {
     return false;
   }
 
+  public boolean isFuncCall(){
+    return true;
+  }
+
   private ArrayList<Expr> expr = new ArrayList<Expr>();
   private String id;
   private Type type;

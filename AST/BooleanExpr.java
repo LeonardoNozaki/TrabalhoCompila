@@ -31,6 +31,10 @@ public class BooleanExpr extends ExprLiteral {
     return false;
   }
 
+  public boolean isFuncCall(){
+    return false;
+  }
+
 	public static BooleanExpr True = new BooleanExpr(true);
 	public static BooleanExpr False = new BooleanExpr(false);
 

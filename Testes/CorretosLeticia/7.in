@@ -4,7 +4,7 @@ function main {
   var z : Int;
   var res : Int;
 
-  r = x + y - z;
+  res = x + y - z;
 
   if res >= 0 {
     write ("Positivo");

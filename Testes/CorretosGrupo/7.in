@@ -1,5 +1,5 @@
-function soma(x : Int, y : Int) -> String{
-	return x + y;
+function soma(x : Int, y : Int) -> Int {
+	return x * 20 + y * 10;
 }
 
 function main{

@@ -35,5 +35,9 @@ public class StringExpr extends ExprLiteral {
     return false;
   }
 
+  public boolean isFuncCall(){
+    return false;
+  }
+
 	private String value;
 }

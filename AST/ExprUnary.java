@@ -40,6 +40,10 @@ public class ExprUnary {
       return this.expr.isId();
     }
 
+    public boolean isFuncCall(){
+      return this.expr.isFuncCall();
+    }
+
     private ExprPrimary expr;
     private Symbol symbol;
 }

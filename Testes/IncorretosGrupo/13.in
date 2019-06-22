@@ -1,0 +1,12 @@
+function soma -> Int{
+	return 10 + 10;
+}
+
+//Funcao com nome duplicado
+function soma (a : Int) -> Int{
+	return 10 + a;
+}
+
+function main{
+	soma();
+}

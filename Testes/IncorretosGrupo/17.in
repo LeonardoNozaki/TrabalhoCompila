@@ -1,0 +1,25 @@
+function soma -> Int{
+	return "String";
+	return true;
+	return false;
+}
+
+function soma -> String{
+	return 10;
+	return true;
+	return false;
+}
+
+function soma (A : Int) -> Boolean{
+	return 10;
+	return "String";
+	return "false";
+}
+
+function main{
+	var a : String;
+	2 = 1 + 2;
+	2 = soma();
+	2 = a;
+	a = soma();
+}

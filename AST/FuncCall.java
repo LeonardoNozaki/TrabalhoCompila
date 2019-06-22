@@ -41,7 +41,7 @@ public class FuncCall extends ExprPrimary {
   }
 
   public Type getType() {
-      return type;
+    return type;
   }
 
   public boolean isId(){

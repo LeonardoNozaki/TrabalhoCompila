@@ -31,6 +31,9 @@ public class Function {
   }
 
   public int getSize(){
+    if(this.paramList == null){
+      return 0;
+    }
     return this.paramList.size();
   }
 

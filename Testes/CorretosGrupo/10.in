@@ -43,5 +43,6 @@ function maiorIgual(valorA : Int, valorB: Int) -> Boolean{
 
 function main{
 	var resultado : Int;
+	resultado = constante();
 
 }

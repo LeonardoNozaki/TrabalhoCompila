@@ -947,6 +947,7 @@ public class Compiler {
       return new Write( expr, id );
     }
 
+
     Function f = (Function) symbolTable.getInGlobal(id);
     if(f != null){ //Funcao ja declarada
       if(f.getSize() != types.size()){

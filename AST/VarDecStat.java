@@ -22,10 +22,22 @@ public class VarDecStat extends Statement {
 
   public void genC( PW pw ) {
     if(parameter){
-      pw.print(this.type.getCname() + " " + this.name);
+      if(this.type == Type.stringType){
+        //Vetor de char com tamanho pre definido
+        pw.print(this.type.getCname() + " " + this.name + "[100]");
+      }
+      else{
+        pw.print(this.type.getCname() + " " + this.name);
+      }
     }
     else{
-      pw.println(this.type.getCname() + " " + this.name + ";");
+      if(this.type == Type.stringType){
+        //Vetor de char com tamanho pre definido
+        pw.println(this.type.getCname() + " " + this.name + "[100];");
+      }
+      else{
+        pw.println(this.type.getCname() + " " + this.name + ";");
+      }
     }
   }
 

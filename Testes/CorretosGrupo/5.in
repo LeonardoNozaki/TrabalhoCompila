@@ -1,3 +1,8 @@
+function mensagem(msg : String) -> String{
+	writeln(msg);
+	return "write";
+}
+
 function main{
 	var a : Int;
 	var b : Int;
@@ -6,4 +11,9 @@ function main{
 	if a != b and a < b{
 		a = 7;
 	}
+	var ret : String;
+	ret = mensagem("Parabens");
+	writeln(ret);
 }
+
+

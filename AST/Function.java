@@ -47,8 +47,12 @@ public class Function {
       /*if(this.type == null)
         pw.print("void ");
       else*/
-      pw.print(this.type.getCname() + " ");
-
+      if(this.type == Type.stringType){
+        pw.print(this.type.getCname() + "* ");
+      }
+      else{
+        pw.print(this.type.getCname() + " ");
+      }
       pw.out.print(this.id);
       pw.out.print("(");
       if(paramList != null){

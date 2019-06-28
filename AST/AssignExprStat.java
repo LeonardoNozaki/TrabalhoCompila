@@ -27,21 +27,31 @@ public class AssignExprStat extends Statement {
       pw.out.println(");");
     }
     else if(this.read == 2){ //ReadString
-      pw.print("scanf(\"%s\", &");
+      pw.print("scanf(\"%s\", ");
       this.left.genC(pw);
       pw.out.println(");");
     }
     else{
-  		pw.print("");
-  		this.left.genC(pw);
-  		if ( right != null ) {
-  			pw.out.print(" = ");
-  			this.right.genC(pw);
-  			pw.out.println(";");
-  		}
-  		else{
-  			pw.out.println(";");
-  		}
+      //atribuicao de string
+      if(this.left.getType() == Type.stringType && right != null){
+        pw.print("strcpy(");
+        this.left.genC(pw);
+        pw.out.print(", ");
+        this.right.genC(pw);
+        pw.out.println(");");
+      }
+      else{ //Outras atribuicoes
+    		pw.print("");
+    		this.left.genC(pw);
+    		if ( right != null ) {
+    			pw.out.print(" = ");
+    			this.right.genC(pw);
+    			pw.out.println(";");
+    		}
+    		else{
+    			pw.out.println(";");
+    		}
+      }
     }
 	}
 

@@ -6,5 +6,7 @@ function main{
 	var c : String;
 	b = readString();
 	a = readInt();
-	b = c;
+	c = b;
+	write(b);
+	write(c);
 }

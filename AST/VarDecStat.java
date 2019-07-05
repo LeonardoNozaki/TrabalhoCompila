@@ -33,7 +33,7 @@ public class VarDecStat extends Statement {
     else{
       if(this.type == Type.stringType){
         //Vetor de char com tamanho pre definido
-        pw.println(this.type.getCname() + " " + this.name + "[100];");
+        pw.println("static " + this.type.getCname() + " " + this.name + "[100];");
       }
       else{
         pw.println(this.type.getCname() + " " + this.name + ";");
